@@ -62,7 +62,7 @@ def crop_image(image, area):
 # a set of coordinates, for the top left, top right, bottom
 # left, and bottom right of the tag
 # Returns a string, where the string is the contents of the cropped file.
-def locate_asset(image, lines="", KERAS=False, DARKNET=False):
+def locate_asset(self, image, lines=""):
 	
 	cropped_images = []
 
@@ -70,7 +70,7 @@ def locate_asset(image, lines="", KERAS=False, DARKNET=False):
 
 		if LABEL_NAME in line:
 			# Extract the nameplate info
-			area = extract_info(line, KERAS, DARKNET)
+			area = extract_info(line, self.KERAS, self.DARKNET)
 			# Open image
 			cropped_images.append(crop_image(image, area))
 	if cropped_images == []:

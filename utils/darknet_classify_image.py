@@ -41,7 +41,7 @@ def init_darknet(thresh=.25, data=DATA_FILE, cfg=CFG_FILE, weights=WEIGHTS):
 #    weights (string) - name of the pre-trained weights
 # Return:
 #    Returns the output from darknet, which gives the location of each bounding box.
-def classify_image(image, proc=None, thresh=.25, data=DATA_FILE, cfg=CFG_FILE, weights=WEIGHTS):
+def darknet_classify_image(image, proc=None, thresh=.25, data=DATA_FILE, cfg=CFG_FILE, weights=WEIGHTS):
 	if proc == None:
 		proc = init_darknet(thresh, data, cfg, weights)
 	proc.sendline(image)

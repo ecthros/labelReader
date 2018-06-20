@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 from __future__ import print_function
-from utils.locate_asset import locate_asset
 from utils.darknet_classify_image import *
 from utils.keras_classify_image import *
 from utils.ocr import ocr
@@ -12,38 +11,33 @@ from PIL import Image
 import time
 import os
 from RotNet.correct_rotation import *
+from config import *
 
 PYTHON_VERSION = sys.version_info[0]
 OS_VERSION = os.name
 
-## Change the following variable based on what algorithms you want to use ##
 
-# One of {DARKNET, KERAS} needs to be true
-# Specifies which classifier to use
-DARKNET = False
-KERAS = True
-
-# One of {TESSERACT, COGNITIVE_SERVICES} needs to be true
-# Specifies which OCR to use
-TESSERACT = False
-COGNITIVE_SERVICES = True
-
-############################################################################
 
 
 
 class RobotIdentifier():
 	''' Programatically finds and determines if a pictures contains an asset and where it is. '''
 	
+	def init_vars(self):
+		self.DARKNET = DARKNET
+		self.KERAS = KERAS
+		self.TESSERACT = TESSERACT
+		self.COGNITIVE_SERVICES = COGNITIVE_SERVICES
+
 	# Initializes the classifier
 	def init_classifier(self):
-		if DARKNET:
+		if self.DARKNET:
 		# Get a child process for speed considerations
-		logger.good("Initializing Darknet")
-		proc = init_darknet()
-		elif KERAS:
-		logger.good("Initializing Keras")
-		proc = init_keras()
+			logger.good("Initializing Darknet")
+			proc = init_darknet()
+		elif self.KERAS:
+			logger.good("Initializing Keras")
+			proc = init_keras()
 		return proc
 
 	# Initializes the tab completer
@@ -77,7 +71,11 @@ class RobotIdentifier():
 			filename = str(raw_input(" Specify File >>> "))
 		return filename
 
+	from utils.locate_asset import locate_asset
+
 	def __init__(self):
+
+		self.init_vars()
 
 		if OS_VERSION == "posix":
 			self.init_tabComplete()
@@ -98,9 +96,9 @@ class RobotIdentifier():
 
 			#### Classify Image ####
 			logger.good("Classifying Image")
-			if DARKNET:
-				coords = classify_image(filename, proc=proc)
-			elif KERAS:
+			if self.DARKNET:
+				coords = darknet_classify_image(filename, proc=proc)
+			elif self.KERAS:
 				coords = keras_classify_image(filename, proc=proc)
 			########################
 
@@ -109,7 +107,7 @@ class RobotIdentifier():
 
 			#### Crop/rotate Image ####
 			logger.good("Locating Asset")
-			cropped_images = locate_asset(filename, lines=coords, KERAS=KERAS, DARKNET=DARKNET)
+			cropped_images = self.locate_asset(filename, lines=coords)
 			###########################
 			
 			time2 = time.time()
