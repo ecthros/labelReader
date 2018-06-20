@@ -30,108 +30,112 @@ COGNITIVE_SERVICES = True
 
 ############################################################################
 
-# Initializes the classifier
-def init_classifier():
-    if DARKNET:
-        # Get a child process for speed considerations
-        logger.good("Initializing Darknet")
-        proc = init_darknet()
-    elif KERAS:
-        logger.good("Initializing Keras")
-        proc = init_keras()
-    return proc
 
-# Initializes the tab completer
-def init_tabComplete():
-        global tabCompleter
-        global readline
-        from utils.PythonCompleter import tabCompleter
-        import readline
-        comp = tabCompleter()
-        # we want to treat '/' as part of a word, so override the delimiters
-        readline.set_completer_delims(' \t\n;')
-        readline.parse_and_bind("tab: complete")
-        readline.set_completer(comp.pathCompleter)
 
-def init_tesseract():
-        global pyocr
-        import pyocr
-        import pyocr.builders
-        tools = pyocr.get_available_tools()
-        if len(tools) == 0:
-                print("No tools found, do you have Tesseract installed?")
-                sys.exit(1)
-        tool = tools[0]
-        langs = tool.get_available_languages()
-        return (tool, langs)
+class RobotIdentifier():
+	''' Programatically finds and determines if a pictures contains an asset and where it is. '''
+	
+	# Initializes the classifier
+	def init_classifier(self):
+		if DARKNET:
+		# Get a child process for speed considerations
+		logger.good("Initializing Darknet")
+		proc = init_darknet()
+		elif KERAS:
+		logger.good("Initializing Keras")
+		proc = init_keras()
+		return proc
 
-def prompt_input():
-        if PYTHON_VERSION == 3:
-                filename = str(input(" Specify File >>> "))
-        elif PYTHON_VERSION == 2:
-                filename = str(raw_input(" Specify File >>> "))
-        return filename
+	# Initializes the tab completer
+	def init_tabComplete(self):
+		global tabCompleter
+		global readline
+		from utils.PythonCompleter import tabCompleter
+		import readline
+		comp = tabCompleter()
+		# we want to treat '/' as part of a word, so override the delimiters
+		readline.set_completer_delims(' \t\n;')
+		readline.parse_and_bind("tab: complete")
+		readline.set_completer(comp.pathCompleter)
 
-# Programatically finds and determines if a pictures contains an asset and where it is.
-def main():
+	def init_tesseract(self):
+		global pyocr
+		import pyocr
+		import pyocr.builders
+		tools = pyocr.get_available_tools()
+		if len(tools) == 0:
+			print("No tools found, do you have Tesseract installed?")
+			sys.exit(1)
+		tool = tools[0]
+		langs = tool.get_available_languages()
+		return (tool, langs)
 
-        if OS_VERSION == "posix":
-                init_tabComplete()
+	def prompt_input(self):
+		if PYTHON_VERSION == 3:
+			filename = str(input(" Specify File >>> "))
+		elif PYTHON_VERSION == 2:
+			filename = str(raw_input(" Specify File >>> "))
+		return filename
 
-        proc = init_classifier()
-        
-        if TESSERACT:
-                logger.good("Initializing Tesseract")
-                (tool, langs) = init_tesseract()
+	def __init__(self):
 
-        logger.good("Initializing RotNet")
-        initialize_rotnet()
+		if OS_VERSION == "posix":
+			self.init_tabComplete()
 
-        while True:
+		proc = self.init_classifier()
+		
+		if TESSERACT:
+			logger.good("Initializing Tesseract")
+			(tool, langs) = self.init_tesseract()
 
-                filename = prompt_input()
-                start = time.time()
+		logger.good("Initializing RotNet")
+		self.initialize_rotnet()
 
-                #### Classify Image ####
-                logger.good("Classifying Image")
-                if DARKNET:
-                        coords = classify_image(filename, proc=proc)
-                elif KERAS:
-                        coords = keras_classify_image(filename, proc=proc)
-                ########################
+		while True:
 
-                time1 = time.time()
-                print("Classify: " + str(time1-start))
+			filename = self.prompt_input()
+			start = time.time()
 
-                #### Crop/rotate Image ####
-                logger.good("Locating Asset")
-                cropped_images = locate_asset(filename, lines=coords, KERAS=KERAS, DARKNET=DARKNET)
-                ###########################
-                
-                time2 = time.time()
-                print("Rotate: " + str(time2-time1))
+			#### Classify Image ####
+			logger.good("Classifying Image")
+			if DARKNET:
+				coords = classify_image(filename, proc=proc)
+			elif KERAS:
+				coords = keras_classify_image(filename, proc=proc)
+			########################
 
-                #### Perform OCR ####
-                if cropped_images == []:
-                        logger.bad("No assets found, so terminating execution")         
-                else:
-                        logger.good("Performing OCR")
-                        if TESSERACT:
-                                txt = tool.image_to_string(Image.open('tilted.jpg'), lang=langs[0], builder=pyocr.builders.TextBuilder())
-                                print("==========RESULT==========\n" + txt + "\n==========================")
-                        else:
-                                ocr(cropped_images)
-                #####################
-                
-                time3 = time.time()
-                print("OCR: " + str(time3-time2))
+			time1 = time.time()
+			print("Classify: " + str(time1-start))
 
-                #### Lookup Database ####
-                #         TODO          #
-                #########################
+			#### Crop/rotate Image ####
+			logger.good("Locating Asset")
+			cropped_images = locate_asset(filename, lines=coords, KERAS=KERAS, DARKNET=DARKNET)
+			###########################
+			
+			time2 = time.time()
+			print("Rotate: " + str(time2-time1))
 
-                end = time.time()
-                logger.good("Elapsed: " + str(end-start))
+			#### Perform OCR ####
+			if cropped_images == []:
+				logger.bad("No assets found, so terminating execution")	 
+			else:
+				logger.good("Performing OCR")
+				if TESSERACT:
+					txt = tool.image_to_string(Image.open('tilted.jpg'), lang=langs[0], builder=pyocr.builders.TextBuilder())
+					print("==========RESULT==========\n" + txt + "\n==========================")
+				else:
+					ocr(cropped_images)
+			#####################
+			
+			time3 = time.time()
+			print("OCR: " + str(time3-time2))
+
+			#### Lookup Database ####
+			#	 TODO	  #
+			#########################
+
+			end = time.time()
+			logger.good("Elapsed: " + str(end-start))
 
 if __name__ == "__main__":
-        main()
+	RobotIdentifier()
