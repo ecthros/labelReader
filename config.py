@@ -1,3 +1,5 @@
+import os
+
 ## Change the following variable based on what algorithms you want to use ##
 
 # One of {DARKNET, KERAS} needs to be true
@@ -39,14 +41,14 @@ elif KERAS:
 	# Change the location of Keras-yolo3 if you 
 	# move it. You will need to change Keras-yolo's 
 	# source code with the changes for the weights.
-	LOCATION = "keras-yolo3/"
+	KERAS_LOCATION = "keras-yolo3/"
 
 #####################################################################
 
 #### Cognitive Services Information ####
 
 SUBSCRIPTION_KEY = ""
-SHOW_RESPONSE = False
+SHOW_RESPONSE = True
 
 ########################################
 
