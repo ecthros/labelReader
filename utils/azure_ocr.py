@@ -2,11 +2,12 @@ import requests
 import json
 import time
 from utils.ocr import OCR
+from config import *
 
 class AzureOCR(OCR):
 	def initialize(self):
-		self.SUBSCRIPTION_KEY = ""
-		self.SHOW_RESPONSE = True
+		self.SUBSCRIPTION_KEY = SUBSCRIPTION_KEY
+		self.SHOW_RESPONSE = SHOW_RESPONSE
 
 	# Prints the response from Cognitive Services.
 	def print_response(self, response):

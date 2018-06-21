@@ -15,7 +15,6 @@ class TesseractOCR(OCR):
 		self.langs = self.tool.get_available_languages()
 
 	def ocr(self, images):
-		# TODO: please improve this
 		results = []
 		for image in images:
 			txt = tool.image_to_string(image, lang=langs[0], builder=pyocr.builders.TextBuilder())

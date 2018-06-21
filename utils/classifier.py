@@ -9,5 +9,9 @@ class Classifier(ABC):
 	def classify_image(self, image):
 		pass
 
+	@abstractmethod
+	def extract_info(self, line):
+		pass
+
 	def __init__(self):
 		self.initialize()

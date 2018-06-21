@@ -95,7 +95,7 @@ class RobotIdentifier():
 
 			#### Crop/rotate Image ####
 			logger.good("Locating Asset")
-			cropped_images = self.locate_asset(filename, lines=coords)
+			cropped_images = self.locate_asset(filename, classifier, lines=coords)
 			###########################
 			
 			time2 = time.time()
@@ -113,7 +113,7 @@ class RobotIdentifier():
 			print("OCR: " + str(time3-time2))
 
 			#### Lookup Database ####
-			#	 TODO	  #
+			#	      TODO	        #
 			#########################
 
 			end = time.time()
