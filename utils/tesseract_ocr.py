@@ -15,9 +15,12 @@ class TesseractOCR(OCR):
 		self.langs = self.tool.get_available_languages()
 
 	def ocr(self, images):
+		'''Input: images (tuple(area, image))
+		Returns the results from Tesseract.'''
+
 		results = []
 		for image in images:
-			txt = self.tool.image_to_string(image, lang=self.langs[0], builder=pyocr.builders.TextBuilder())
-			print("==========RESULT==========\n" + txt + "\n==========================")
+			txt = self.tool.image_to_string(image[1], lang=self.langs[0], builder=pyocr.builders.TextBuilder())
+			print("==RESULT==" + str(area) + "\n" + txt + "\n==========================")
 			results.append(txt)
 		return results

@@ -22,12 +22,15 @@ def crop_image(image, area):
 
 	return rotated_image
 
-# Determines where an asset is in the picture, returning
-# a set of coordinates, for the top left, top right, bottom
-# left, and bottom right of the tag
-# Returns a string, where the string is the contents of the cropped file.
+
 def locate_asset(self, image, classifier, lines=""):
-	
+	''' Determines where an asset is in the picture, returning
+	 a set of coordinates, for the top left, top right, bottom
+	 left, and bottom right of the tag
+	 Returns:
+	 [(area, image)]
+	 	Area is the coordinates of the bounding box
+	 	Image is the image, opened by PIL.'''
 	cropped_images = []
 
 	for line in str(lines).split('\n'):
@@ -36,7 +39,7 @@ def locate_asset(self, image, classifier, lines=""):
 			# Extract the nameplate info
 			area = classifier.extract_info(line)
 			# Open image
-			cropped_images.append(crop_image(image, area))
+			cropped_images.append((area, crop_image(image, area)))
 	if cropped_images == []:
 		logger.bad("No label found in image.")
 	else:

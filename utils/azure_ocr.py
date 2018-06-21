@@ -9,8 +9,12 @@ class AzureOCR(OCR):
 		self.SUBSCRIPTION_KEY = SUBSCRIPTION_KEY
 		self.SHOW_RESPONSE = SHOW_RESPONSE
 
-	# Prints the response from Cognitive Services.
-	def print_response(self, response):
+	def print_response(self, area, response):
+		''' Prints the response from Cognitive Services.
+		Input:
+			area - String describing the bounding box of the data
+			response - The response for the image from Cognitive Services
+		'''
 		txt = ""
 		for line in response['recognitionResult']['lines']:
 			txt += line['text']
@@ -18,7 +22,7 @@ class AzureOCR(OCR):
 			if response["status"] == "Succeeded":
 				#print(response['recognitionResult']['lines'])
 				print("")
-				print("==========RESULT==========")
+				print("==RESULT==" + str(area))
 				for line in response['recognitionResult']['lines']:
 					print(line['text'])
 				print("==========================")
@@ -28,8 +32,13 @@ class AzureOCR(OCR):
 				print(response)
 		return txt
 
-	#Performs OCR on a single image
-	def ocr_one_image(self, image_data):
+	
+	def ocr_one_image(self, area, image_data):
+		''' Performs OCR on a single image
+		Input:
+			area - String that describe the bounding box of the data
+			image_data - String of the data
+		'''
 		request_url = "https://westus.api.cognitive.microsoft.com/vision/v2.0/recognizeText?mode=Printed"
 		headers  = {'Ocp-Apim-Subscription-Key': self.SUBSCRIPTION_KEY, 'Content-Type': "application/octet-stream"}
 		data     = image_data
@@ -48,7 +57,7 @@ class AzureOCR(OCR):
 				r2 = requests.get(response.headers['Operation-Location'], headers={'Ocp-Apim-Subscription-Key': self.SUBSCRIPTION_KEY})
 				get_response = r2.json()
 				#print(get_response)
-			self.print_response(get_response)
+			self.print_response(area, get_response)
 			return get_response
 		print(response)
 
@@ -64,10 +73,12 @@ class AzureOCR(OCR):
 	# returns a JSON object with all the words and bounding boxes in the object.
 	# Accepts an array of images.
 	def ocr(self, images):
+		'''Input: images (tuple(area, image))
+		Returns the results from Tesseract.'''
 		responses = []
 
-		for image_data in images: 
-			ocr_result = self.ocr_one_image(self.pic_to_string(image_data))
+		for image in images: 
+			ocr_result = self.ocr_one_image(image[0], self.pic_to_string(image[1]))
 			responses.append(ocr_result)
 
 		return responses
