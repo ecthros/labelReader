@@ -3,7 +3,8 @@
 from __future__ import print_function
 from utils.darknet_classify_image import *
 from utils.keras_classify_image import *
-from utils.ocr import ocr
+from utils.azure_ocr import *
+from utils.tesseract_ocr import *
 import utils.logger as logger
 from utils.rotate import *
 import sys
@@ -35,6 +36,15 @@ class RobotIdentifier():
 			logger.good("Initializing Keras")
 			self.classifier = KerasClassifier()
 
+	# Initializes the OCR engine
+	def init_ocr(self):
+		if self.TESSERACT:
+			logger.good("Initializing Tesseract")
+			self.OCR = TesseractOCR()
+		elif self.COGNITIVE_SERVICES:
+			logger.good("Initializing Cognitive Services")
+			self.OCR = AzureOCR()
+
 	# Initializes the tab completer
 	def init_tabComplete(self):
 		global tabCompleter
@@ -46,18 +56,6 @@ class RobotIdentifier():
 		readline.set_completer_delims(' \t\n;')
 		readline.parse_and_bind("tab: complete")
 		readline.set_completer(comp.pathCompleter)
-
-	def init_tesseract(self):
-		global pyocr
-		import pyocr
-		import pyocr.builders
-		tools = pyocr.get_available_tools()
-		if len(tools) == 0:
-			print("No tools found, do you have Tesseract installed?")
-			sys.exit(1)
-		tool = tools[0]
-		langs = tool.get_available_languages()
-		return (tool, langs)
 
 	def prompt_input(self):
 		if PYTHON_VERSION == 3:
@@ -77,10 +75,8 @@ class RobotIdentifier():
 
 		self.init_classifier()
 		
-		if TESSERACT:
-			logger.good("Initializing Tesseract")
-			(tool, langs) = self.init_tesseract()
-
+		self.init_OCR()
+		
 		logger.good("Initializing RotNet")
 		initialize_rotnet()
 
@@ -110,11 +106,7 @@ class RobotIdentifier():
 				logger.bad("No assets found, so terminating execution")	 
 			else:
 				logger.good("Performing OCR")
-				if TESSERACT:
-					txt = tool.image_to_string(Image.open('tilted.jpg'), lang=langs[0], builder=pyocr.builders.TextBuilder())
-					print("==========RESULT==========\n" + txt + "\n==========================")
-				else:
-					ocr(cropped_images)
+				self.OCR.ocr(cropped_images)
 			#####################
 			
 			time3 = time.time()
