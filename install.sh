@@ -23,7 +23,7 @@ fi
 pip install pillow requests opencv-python keras tensorflow matplotlib pexpect Cython
 
 echo -e "\n\nInstalling RotNet\n\n"
-git clone https://github.com/d4nst/RotNet
+git clone https://github.com/ecthros/RotNet
 cd RotNet
 mkdir rotnet_models
 wget https://www.dropbox.com/s/ch5917qg0j9leyj/rotnet_models.zip?dl=0
@@ -39,5 +39,11 @@ echo -e "\n\nDownloading darknet\n\n"
 wget https://www.dropbox.com/s/9nxzvyyi53bi4p4/darknet?dl=0
 mv darknet?dl=0 darknet
 chmod 755 darknet
+
+echo -e "\n\nDownloading Keras-Yolo3\n\n"
+git clone https://github.com/qqwweee/keras-yolo3
+cd keras-yolo3
+python convert.py ../yolo-obj.cfg yolo-obj_1600.weights model_data/yolo.h5
+echo "label" > model_data/coco_classes.txt
 
 #needed darknet. Moved to pwd.

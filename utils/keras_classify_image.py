@@ -1,7 +1,7 @@
 import subprocess
 import os
 import pexpect
-from classifier import Classifier
+from utils.classifier import Classifier
 
 if os.name == 'nt':
 	from pexpect import popen_spawn

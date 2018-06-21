@@ -1,5 +1,5 @@
 *.jpg
-
+utils/ocr.py
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

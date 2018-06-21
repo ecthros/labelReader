@@ -91,7 +91,7 @@ class RobotIdentifier():
 
 			#### Classify Image ####
 			logger.good("Classifying Image")
-			self.classifier.classify_image(filename)
+			coords = self.classifier.classify_image(filename)
 			########################
 
 			time1 = time.time()
