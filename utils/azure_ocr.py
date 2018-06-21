@@ -18,7 +18,7 @@ class AzureOCR(OCR):
 		'''
 		txt = ""
 		for line in response['recognitionResult']['lines']:
-			txt += line['text']
+			txt += line['text'] + '\n'
 		if self.SHOW_RESPONSE:
 			if response["status"] == "Succeeded":
 				#print(response['recognitionResult']['lines'])
@@ -80,6 +80,6 @@ class AzureOCR(OCR):
 
 		for image in images: 
 			ocr_result = self.ocr_one_image(image[0], self.pic_to_string(image[1]))
-			responses.append(ocr_result)
+			responses.append((image[0], ocr_result))
 
 		return responses

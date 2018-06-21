@@ -22,5 +22,5 @@ class TesseractOCR(OCR):
 		for image in images:
 			txt = self.tool.image_to_string(image[1], lang=self.langs[0], builder=pyocr.builders.TextBuilder())
 			print("==RESULT==" + str(image[0]) + "\n" + txt + "\n==========================")
-			results.append(txt)
+			results.append((image[0], txt))
 		return results
