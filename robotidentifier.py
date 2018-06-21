@@ -7,6 +7,7 @@ from utils.azure_ocr import *
 from utils.tesseract_ocr import *
 import utils.logger as logger
 from utils.rotate import *
+from utils.lookup_database import *
 import sys
 from PIL import Image
 import time
@@ -102,18 +103,19 @@ class RobotIdentifier():
 			print("Rotate: " + str(time2-time1))
 
 			#### Perform OCR ####
+			ocr_results = None
 			if cropped_images == []:
 				logger.bad("No assets found, so terminating execution")	 
 			else:
 				logger.good("Performing OCR")
-				self.OCR.ocr(cropped_images)
+				ocr_results = self.OCR.ocr(cropped_images)
 			#####################
 			
 			time3 = time.time()
 			print("OCR: " + str(time3-time2))
 
 			#### Lookup Database ####
-			#	      TODO	        #
+			lookup_database(ocr_results)
 			#########################
 
 			end = time.time()

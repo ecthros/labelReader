@@ -54,12 +54,12 @@ class AzureOCR(OCR):
 			# Continue sending requests until it finished processing
 			while get_response["status"] == "Running" or get_response["status"] == "NotStarted":
 				#print(get_response)
-				time.sleep(1)
+				time.sleep(.2)
 				r2 = requests.get(response.headers['Operation-Location'], headers={'Ocp-Apim-Subscription-Key': self.SUBSCRIPTION_KEY})
 				get_response = r2.json()
 				#print(get_response)
-			self.print_response(area, get_response)
-			return get_response
+			res = self.print_response(area, get_response)
+			return res
 		print(response)
 
 	def pic_to_string(self, image):

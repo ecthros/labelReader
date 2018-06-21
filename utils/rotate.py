@@ -5,7 +5,7 @@ import os
 import pexpect
 from RotNet.correct_rotation import *
 from config import *
-
+import time
 
 #For speed concerns, let's load up the model first
 def initialize_rotnet(model=ROTNET_MODEL_NAME):
@@ -23,4 +23,5 @@ def rotate(image):
 	rotate_image(ROTNET_SAVE_FILE_NAME)
 	
 	image = Image.open(ROTNET_SAVE_FILE_NAME)
+	print("done")
 	return image
