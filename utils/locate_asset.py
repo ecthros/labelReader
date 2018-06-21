@@ -2,7 +2,6 @@ from PIL import Image
 from PIL import ImageFilter
 import utils.logger as logger
 from utils.rotate import rotate
-from io import BytesIO
 from config import *
 
 # Uses PIL to crop an image, given its area.

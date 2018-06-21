@@ -3,6 +3,7 @@ import json
 import time
 from utils.ocr import OCR
 from config import *
+from io import BytesIO
 
 class AzureOCR(OCR):
 	def initialize(self):
@@ -52,10 +53,10 @@ class AzureOCR(OCR):
 			return get_response
 		print(response)
 
-	def pic_to_string(image):
+	def pic_to_string(self, image):
 		''' Uses PIL and StringIO to save the image to a string for further processing '''
 		output_string = BytesIO()
-		pil_image.save(output_string, format="JPEG")
+		image.save(output_string, format="JPEG")
 		string_contents = output_string.getvalue()
 		output_string.close()
 		return string_contents

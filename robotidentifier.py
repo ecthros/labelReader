@@ -95,7 +95,7 @@ class RobotIdentifier():
 
 			#### Crop/rotate Image ####
 			logger.good("Locating Asset")
-			cropped_images = self.locate_asset(filename, classifier, lines=coords)
+			cropped_images = self.locate_asset(filename, self.classifier, lines=coords)
 			###########################
 			
 			time2 = time.time()
