@@ -1,5 +1,6 @@
 import os
 
+
 ## Change the following variable based on what algorithms you want to use ##
 
 # One of {DARKNET, KERAS} needs to be true
