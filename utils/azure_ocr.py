@@ -44,7 +44,7 @@ class AzureOCR(OCR):
 			while get_response["status"] == "Running" or get_response["status"] == "NotStarted":
 				#print(get_response)
 				time.sleep(1)
-				r2 = requests.get(response.headers['Operation-Location'], headers={'Ocp-Apim-Subscription-Key': SUBSCRIPTION_KEY})
+				r2 = requests.get(response.headers['Operation-Location'], headers={'Ocp-Apim-Subscription-Key': self.SUBSCRIPTION_KEY})
 				get_response = r2.json()
 				#print(get_response)
 			self.print_response(get_response)

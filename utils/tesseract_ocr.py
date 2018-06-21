@@ -2,6 +2,7 @@ from utils.ocr import OCR
 import pyocr
 import pyocr.builders
 import sys
+from PIL import Image
 
 class TesseractOCR(OCR):
 
@@ -11,9 +12,10 @@ class TesseractOCR(OCR):
 			print("No tools found, do you have Tesseract installed?")
 			sys.exit(1) # TODO fix
 		self.tool = tools[0]
-		self.langs = tool.get_available_languages()
+		self.langs = self.tool.get_available_languages()
 
-	def ocr(images):
+	def ocr(self, images):
 		# TODO: please improve this
-		txt = tool.image_to_string(Image.open('tilted.jpg'), lang=langs[0], builder=pyocr.builders.TextBuilder())
+		txt = self.tool.image_to_string(Image.open('tilted.jpg'), lang=self.langs[0], builder=pyocr.builders.TextBuilder())
 		print("==========RESULT==========\n" + txt + "\n==========================")
+		return txt

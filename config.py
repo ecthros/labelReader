@@ -2,12 +2,12 @@
 
 # One of {DARKNET, KERAS} needs to be true
 # Specifies which classifier to use
-DARKNET = True
-KERAS = False
+DARKNET = False
+KERAS = True
 
 # One of {TESSERACT, COGNITIVE_SERVICES} needs to be true
 # Specifies which OCR to use
-TESSERACT = True
-COGNITIVE_SERVICES = False
+TESSERACT = False
+COGNITIVE_SERVICES = True
 
 ############################################################################

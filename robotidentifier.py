@@ -75,7 +75,7 @@ class RobotIdentifier():
 
 		self.init_classifier()
 		
-		self.init_OCR()
+		self.init_ocr()
 		
 		logger.good("Initializing RotNet")
 		initialize_rotnet()
