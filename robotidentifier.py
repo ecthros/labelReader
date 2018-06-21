@@ -16,10 +16,6 @@ from config import *
 PYTHON_VERSION = sys.version_info[0]
 OS_VERSION = os.name
 
-
-
-
-
 class RobotIdentifier():
 	''' Programatically finds and determines if a pictures contains an asset and where it is. '''
 	
@@ -34,11 +30,10 @@ class RobotIdentifier():
 		if self.DARKNET:
 		# Get a child process for speed considerations
 			logger.good("Initializing Darknet")
-			proc = init_darknet()
+			self.classifier = DarknetClassifier()
 		elif self.KERAS:
 			logger.good("Initializing Keras")
-			proc = init_keras()
-		return proc
+			self.classifier = KerasClassifier()
 
 	# Initializes the tab completer
 	def init_tabComplete(self):
@@ -80,14 +75,14 @@ class RobotIdentifier():
 		if OS_VERSION == "posix":
 			self.init_tabComplete()
 
-		proc = self.init_classifier()
+		self.init_classifier()
 		
 		if TESSERACT:
 			logger.good("Initializing Tesseract")
 			(tool, langs) = self.init_tesseract()
 
 		logger.good("Initializing RotNet")
-		self.initialize_rotnet()
+		initialize_rotnet()
 
 		while True:
 
@@ -96,10 +91,7 @@ class RobotIdentifier():
 
 			#### Classify Image ####
 			logger.good("Classifying Image")
-			if self.DARKNET:
-				coords = darknet_classify_image(filename, proc=proc)
-			elif self.KERAS:
-				coords = keras_classify_image(filename, proc=proc)
+			self.classifier.classify_image(filename)
 			########################
 
 			time1 = time.time()
