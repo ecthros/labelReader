@@ -21,7 +21,5 @@ def rotate(image):
 
 	logger.good("Rotating Image")
 	rotate_image(ROTNET_SAVE_FILE_NAME)
-	
 	image = Image.open(ROTNET_SAVE_FILE_NAME)
-	print("done")
 	return image

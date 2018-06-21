@@ -1,5 +1,5 @@
 from fuzzywuzzy import fuzz
-
+from fuzzywuzzy import process
 bose_qc25 = {
 "065252Z80341129AE": "ACTIVE",
 "065252Z80571416AE": "DISABLED"
@@ -17,11 +17,22 @@ def lookup_database(txt):
 	if txt is None:
 		return
 	for line in txt:
-		for key in bose_qc25.keys():
-			lines = line[1].split('\n')
-			for l in lines:
-				for word in l.split(' '):
-					if fuzz.ratio(key, word) > 80:
-						print(line[0])
-						print(bose_qc25[key])
+		lines = line[1].split('\n')
+		max = 0
+		bestGuess = "UNKNOWN"
+		bestWord = ""
+		keys = bose_qc25.keys()
+		for l in lines:
+			for word in l.split(' '):
+				if word != "":
+					(guess, confidence) = process.extractOne(word, keys)
+					if confidence > max:
+						max = confidence
+						bestGuess = guess
+						bestWord = word
+		if bestGuess == "UNKNOWN":
+			print("Unknown product - " + str(line[0]))
+		else:
+			print(bestWord)
+			print(str(bose_qc25[bestGuess]) + " product - " + str(line[0]) + ", confidence: " + str(max))
 
