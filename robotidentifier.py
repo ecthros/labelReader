@@ -14,6 +14,7 @@ import time
 import os
 from RotNet.correct_rotation import *
 from config import *
+import argparse
 
 PYTHON_VERSION = sys.version_info[0]
 OS_VERSION = os.name
@@ -21,6 +22,11 @@ OS_VERSION = os.name
 class RobotIdentifier():
 	''' Programatically finds and determines if a pictures contains an asset and where it is. '''
 	
+	def parse_args(self):
+		parser = argparse.ArgumentParser()
+		parser.add_argument('-d', '--darknet', dest='DARKNET', type=bool)
+		parser.add_argument('-k', '--keras', dest='KERAS', type=bool)
+
 	def init_vars(self):
 		self.DARKNET = DARKNET
 		self.KERAS = KERAS
@@ -68,6 +74,8 @@ class RobotIdentifier():
 	from utils.locate_asset import locate_asset
 
 	def __init__(self):
+
+		self.parse_args()
 
 		self.init_vars()
 
