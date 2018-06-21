@@ -16,6 +16,9 @@ class TesseractOCR(OCR):
 
 	def ocr(self, images):
 		# TODO: please improve this
-		txt = self.tool.image_to_string(Image.open('tilted.jpg'), lang=self.langs[0], builder=pyocr.builders.TextBuilder())
-		print("==========RESULT==========\n" + txt + "\n==========================")
-		return txt
+		results = []
+		for image in images:
+			txt = tool.image_to_string(image, lang=langs[0], builder=pyocr.builders.TextBuilder())
+			print("==========RESULT==========\n" + txt + "\n==========================")
+			results.append(txt)
+		return results
