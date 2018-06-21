@@ -1,6 +1,6 @@
 #!/usr/bin/python
-
 from __future__ import print_function
+from config import *
 from utils.darknet_classify_image import *
 from utils.keras_classify_image import *
 from utils.azure_ocr import *
@@ -13,8 +13,6 @@ from PIL import Image
 import time
 import os
 from RotNet.correct_rotation import *
-from config import *
-import argparse
 
 PYTHON_VERSION = sys.version_info[0]
 OS_VERSION = os.name
@@ -71,9 +69,6 @@ class RobotIdentifier():
 
 	def __init__(self):
 
-
-		initializeConfig()
-		self.parse_args()
 		self.init_vars()
 		self.init_tabComplete()
 		self.init_classifier()
