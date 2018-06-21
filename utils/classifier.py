@@ -1,12 +1,16 @@
 from abc import ABC, abstractmethod
 
-class OCR(ABC):
+class Classifier(ABC):
 	@abstractmethod
 	def initialize(self):
 		pass
 
 	@abstractmethod
-	def ocr(self, images):
+	def classify_image(self, image):
+		pass
+
+	@abstractmethod
+	def extract_info(self, line):
 		pass
 
 	def __init__(self):

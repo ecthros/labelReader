@@ -2,43 +2,7 @@ from PIL import Image
 from PIL import ImageFilter
 import utils.logger as logger
 from utils.rotate import rotate
-from io import BytesIO
-
-# Determines if we should show images after cropping them
-SHOW_IMAGES = False
-# Name of the labels
-LABEL_NAME = 'label'
-
-# This method returns the area to crop out of a given image.
-# Its input is a line, which comes from the output from darknet.
-def extract_info(line, KERAS, DARKNET):
-	if KERAS:
-		nameplate_info = line.split()
-		nameplate_confidence = nameplate_info[1]
-		nameplate_left_x = int(nameplate_info[2][1:][:-1])
-		nameplate_top_y = int(nameplate_info[3][:-1])
-		nameplate_right_x = int(nameplate_info[4][1:][:-1])
-		nameplate_bottom_y = int(nameplate_info[5][:-1])
-	
-		area = (nameplate_left_x, nameplate_top_y, nameplate_right_x, (nameplate_bottom_y))
-	elif DARKNET:
-		nameplate_info = line.split()
-		nameplate_confidence = nameplate_info[1]
-		nameplate_left_x = int(nameplate_info[3])
-		nameplate_top_y = int(nameplate_info[5])
-		nameplate_width = int(nameplate_info[7])
-		nameplate_height = int(nameplate_info[9][:-1])
-	
-		area = (nameplate_left_x, nameplate_top_y, (nameplate_left_x + nameplate_width), (nameplate_top_y + nameplate_height))
-	return area
-
-# Uses PIL and StringIO to save the image to a string for further processing
-def save_image(pil_image):
-	output_string = BytesIO()
-	pil_image.save(output_string, format="JPEG")
-	string_contents = output_string.getvalue()
-	output_string.close()
-	return string_contents
+from config import *
 
 # Uses PIL to crop an image, given its area.
 def crop_image(image, area):
@@ -55,24 +19,26 @@ def crop_image(image, area):
 		logger.good("Showing cropped image")
 		rotated_image.show()
 
+	return rotated_image
 
-	return save_image(rotated_image)
 
-# Determines where an asset is in the picture, returning
-# a set of coordinates, for the top left, top right, bottom
-# left, and bottom right of the tag
-# Returns a string, where the string is the contents of the cropped file.
-def locate_asset(image, lines="", KERAS=False, DARKNET=False):
-	
+def locate_asset(self, image, classifier, lines=""):
+	''' Determines where an asset is in the picture, returning
+	 a set of coordinates, for the top left, top right, bottom
+	 left, and bottom right of the tag
+	 Returns:
+	 [(area, image)]
+	 	Area is the coordinates of the bounding box
+	 	Image is the image, opened by PIL.'''
 	cropped_images = []
 
 	for line in str(lines).split('\n'):
 
 		if LABEL_NAME in line:
 			# Extract the nameplate info
-			area = extract_info(line, KERAS, DARKNET)
+			area = classifier.extract_info(line)
 			# Open image
-			cropped_images.append(crop_image(image, area))
+			cropped_images.append((area, crop_image(image, area)))
 	if cropped_images == []:
 		logger.bad("No label found in image.")
 	else:
