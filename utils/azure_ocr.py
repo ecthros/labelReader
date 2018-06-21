@@ -51,6 +51,14 @@ class AzureOCR(OCR):
 			return get_response
 		print(response)
 
+	def pic_to_string(image):
+		''' Uses PIL and StringIO to save the image to a string for further processing '''
+		output_string = BytesIO()
+		pil_image.save(output_string, format="JPEG")
+		string_contents = output_string.getvalue()
+		output_string.close()
+		return string_contents
+
 	# Sends an opened image to Azure's cognitive services.
 	# returns a JSON object with all the words and bounding boxes in the object.
 	# Accepts an array of images.
@@ -58,7 +66,7 @@ class AzureOCR(OCR):
 		responses = []
 
 		for image_data in images: 
-			ocr_result = self.ocr_one_image(image_data)
+			ocr_result = self.ocr_one_image(self.pic_to_string(image_data))
 			responses.append(ocr_result)
 
 		return responses

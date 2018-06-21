@@ -32,14 +32,6 @@ def extract_info(line, KERAS, DARKNET):
 		area = (nameplate_left_x, nameplate_top_y, (nameplate_left_x + nameplate_width), (nameplate_top_y + nameplate_height))
 	return area
 
-# Uses PIL and StringIO to save the image to a string for further processing
-def save_image(pil_image):
-	output_string = BytesIO()
-	pil_image.save(output_string, format="JPEG")
-	string_contents = output_string.getvalue()
-	output_string.close()
-	return string_contents
-
 # Uses PIL to crop an image, given its area.
 def crop_image(image, area):
 	img = Image.open(image)
@@ -56,7 +48,7 @@ def crop_image(image, area):
 		rotated_image.show()
 
 
-	return save_image(rotated_image)
+	return rotated_image
 
 # Determines where an asset is in the picture, returning
 # a set of coordinates, for the top left, top right, bottom
