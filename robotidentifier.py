@@ -26,6 +26,7 @@ class RobotIdentifier():
 		parser = argparse.ArgumentParser()
 		parser.add_argument('-d', '--darknet', dest='DARKNET', type=bool)
 		parser.add_argument('-k', '--keras', dest='KERAS', type=bool)
+		args = parser.parse_args()
 
 	def init_vars(self):
 		self.DARKNET = DARKNET
