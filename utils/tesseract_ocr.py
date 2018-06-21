@@ -18,7 +18,7 @@ class TesseractOCR(OCR):
 		# TODO: please improve this
 		results = []
 		for image in images:
-			txt = tool.image_to_string(image, lang=langs[0], builder=pyocr.builders.TextBuilder())
+			txt = self.tool.image_to_string(image, lang=self.langs[0], builder=pyocr.builders.TextBuilder())
 			print("==========RESULT==========\n" + txt + "\n==========================")
 			results.append(txt)
 		return results
