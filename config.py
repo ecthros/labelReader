@@ -20,24 +20,13 @@ def parse_args():
 	parser.add_argument('-o', '--rotnet_location', dest='ROTNET_LOCATION', default="./RotNet", help="Location of RotNet")
 	parser.add_argument('-m', '--model_name', dest='ROTNET_MODEL_NAME', default="rotnet_models/rotnet_street_view_resnet50_keras2.hdf5", help="Location of RotNet Model")
 	parser.add_argument('-f', '--file_name', dest='ROTNET_SAVE_FILE_NAME', default="tilted.jpg", help="Where to save for RotNet")
-	parser.add_argument('-d', '--darknet', dest='DARKNET', action='store_true')
-	parser.add_argument('-k', '--keras', dest='KERAS', action='store_true')
-	parser.add_argument('-t', '--tesseract', dest='TESSERACT', action='store_true')
-	parser.add_argument('-c', '--cognitive_services', dest='COGNITIVE_SERVICES', action='store_true')
-	parser.add_argument('-l', '--dbl', dest="DARKNET_BINARY_LOCATION", default=None)
-	parser.add_argument('--thresh', dest="DARKNET_THRESH", default=.25, type=float)
-	parser.add_argument('--data', dest="DARKNET_DATA_FILE", default="data/obj.data")
-	parser.add_argument('--cfg', dest="DARKNET_CFG_FILE", default="yolo-obj.cfg")
-	parser.add_argument('--weights', dest="DARKNET_WEIGHTS", default="yolo-obj_1600.weights")
-	parser.add_argument('-e', '--kl', dest="KERAS_LOCATION", default="keras-yolo3/")
-	parser.add_argument('-s', '--key', dest="SUBSCRIPTION_KEY", default="")
-	parser.add_argument('-r', '--show_response', dest="SHOW_RESPONSE", action='store_false')
-	parser.add_argument('-i', '--show_images', dest="SHOW_IMAGES", action='store_true')
-	parser.add_argument('-n', '--label_name', dest='LABEL_NAME', default='label')
-	parser.add_argument('-o', '--rotnet_location', dest='ROTNET_LOCATION', default="./RotNet")
-	parser.add_argument('-m', '--model_name', dest='ROTNET_MODEL_NAME', default="rotnet_models/rotnet_street_view_resnet50_keras2.hdf5")
-	parser.add_argument('-f', '--file_name', dest='ROTNET_SAVE_FILE_NAME', default="tilted.jpg")
 	args = parser.parse_args()
+	if args.KERAS == False and args.DARKNET == False:
+		parser.error("Either Darknet or Keras must be set, add -k or -d")
+	if args.TESSERACT == False and args.COGNITIVE_SERVICES == False:
+		parser.error("Either Tesseract or Cognitive Services must be set, add -t or -c")
+	if args.COGNITIVE_SERVICES == True and args.SUBSCRIPTION_KEY == "":
+		parser.error("Cognitive Services needs a subscription key, please provide with -s")
 	return args
 
 
