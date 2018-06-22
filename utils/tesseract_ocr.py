@@ -23,13 +23,4 @@ class TesseractOCR(OCR):
 			threadList[threadNum] = txt
 		return txt
 
-	def ocr(self, images:Tuple[Tuple[float, float, float, float], object]) -> Tuple[Tuple[float, float, float, float], str]:
-		'''Input: images (tuple(area, image))
-		Returns the results from Tesseract.'''
-
-		results = []
-		for image in images:
-			
-			
-			results.append((image[0], txt))
-		return results
+	
