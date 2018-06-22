@@ -4,6 +4,7 @@ import time
 from utils.ocr import OCR
 from config import *
 from io import BytesIO
+import threading
 
 class AzureOCR(OCR):
 	def initialize(self):
@@ -34,7 +35,7 @@ class AzureOCR(OCR):
 		return txt
 
 	
-	def ocr_one_image(self, area, image_data):
+	def ocr_one_image(self, area, image_data, threadList=-1, threadNum=None):
 		''' Performs OCR on a single image
 		Input:
 			area - String that describe the bounding box of the data
@@ -60,6 +61,8 @@ class AzureOCR(OCR):
 					get_response = r2.json()
 					#print(get_response)
 				res = self.print_response(area, get_response)
+				if threadList != -1:
+					threadList[threadNum] = res
 				return res
 			print(response)
 		except Exception as e:
@@ -82,10 +85,16 @@ class AzureOCR(OCR):
 		'''Sends an opened image to Azure's cognitive services.
 		Input: images (tuple(area, image))
 		Returns the results from Tesseract.'''
-		responses = []
-
+		threads = []
+		threadResults = [""*len(images)]
+		threadNum = 0
 		for image in images: 
-			ocr_result = self.ocr_one_image(image[0], self.pic_to_string(image[1]))
-			responses.append((image[0], ocr_result))
+			t = Thread(target=self.ocr_one_image, args=(image[0], self.pic_to_string(image[1]), threadList=threadResults, threadNum=threadNum))
+			t.start()
+			threads.append(t)
+			threadNum += 1
 
-		return responses
+		for t in threads:
+			t.join()
+
+		return threadResults
