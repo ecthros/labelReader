@@ -5,10 +5,10 @@ from config import *
 
 class KerasClassifier(Classifier):
 
-	# Initialize the Keras-yolo model for speed concerns.
-	# Return: 
-	#    proc (pexpect procedure) - 
 	def initialize(self):
+		''' Initialize the Keras-yolo model for speed concerns.
+		 Return: None, but self.proc is populated with a procedure that can interface with Keras-Yolo '''
+
 		command = "python yolo.py"
 		if os.name == 'nt':
 			self.proc = popen_spawn.PopenSpawn(command, cwd=os.path.dirname(KERAS_LOCATION))
@@ -16,13 +16,14 @@ class KerasClassifier(Classifier):
 			self.proc = pexpect.spawn(command, cwd=os.path.dirname(KERAS_LOCATION))
 		self.proc.expect('Input image filename:')
 
-	# Classifies a given image using Keras-Yolo3.
-	# Input:
-	#    image (string) - Provide the saved filename 
-	#    proc (proc)    - Procedure with Keras-Yolo3 started
-	# Returns:
-	#    string of the results from Keras-Yolo3
+	
 	def classify_image(self, image):
+		''' Classifies a given image using Keras-Yolo3.
+		Should already be initialized.
+		 Input:
+		    image (string) - Provide the saved filename 
+		 Returns:
+		    string of the results from Keras-Yolo3'''
 		self.proc.sendline("../" + image) # Todo please fix this line
 		self.proc.expect('Input image filename:', timeout=90)
 		res = self.proc.before

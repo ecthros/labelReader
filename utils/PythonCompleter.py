@@ -3,8 +3,8 @@ import sys
 import readline
 import glob
 
-# A simple tab completer for linux
 class tabCompleter(object):
+	''' A simple tab completer for linux '''
 	def pathCompleter(self,text,state):
 		line   = readline.get_line_buffer().split()
 		if '~' in text:

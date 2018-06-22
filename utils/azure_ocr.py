@@ -63,18 +63,18 @@ class AzureOCR(OCR):
 		print(response)
 
 	def pic_to_string(self, image):
-		''' Uses PIL and StringIO to save the image to a string for further processing '''
+		''' Uses PIL and StringIO to save the image to a string for further processing 
+		Input: image - an image opened by PIL
+		Output: A string containing all the data of the picture'''
 		output_string = BytesIO()
 		image.save(output_string, format="JPEG")
 		string_contents = output_string.getvalue()
 		output_string.close()
 		return string_contents
 
-	# Sends an opened image to Azure's cognitive services.
-	# returns a JSON object with all the words and bounding boxes in the object.
-	# Accepts an array of images.
 	def ocr(self, images):
-		'''Input: images (tuple(area, image))
+		'''Sends an opened image to Azure's cognitive services.
+		Input: images (tuple(area, image))
 		Returns the results from Tesseract.'''
 		responses = []
 

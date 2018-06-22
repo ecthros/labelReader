@@ -7,6 +7,7 @@ from PIL import Image
 class TesseractOCR(OCR):
 
 	def initialize(self):
+		''' Initialize Tesseract and load it up for speed '''
 		tools = pyocr.get_available_tools()
 		if len(tools) == 0:
 			print("No tools found, do you have Tesseract installed?")

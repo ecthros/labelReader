@@ -4,8 +4,11 @@ import utils.logger as logger
 from utils.rotate import rotate
 from config import *
 
-# Uses PIL to crop an image, given its area.
 def crop_image(image, area):
+	''' Uses PIL to crop an image, given its area.
+	Input:
+		image - PIL opened image
+		Area - Coordinates in tuple (xmin, ymax, xmax, ymin) format '''
 	img = Image.open(image)
 	cropped_image = img.crop(area)
 

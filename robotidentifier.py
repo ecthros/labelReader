@@ -26,8 +26,8 @@ class RobotIdentifier():
 		self.TESSERACT = TESSERACT
 		self.COGNITIVE_SERVICES = COGNITIVE_SERVICES
 
-	# Initializes the classifier
 	def init_classifier(self):
+		''' Initializes the classifier '''
 		if self.DARKNET:
 		# Get a child process for speed considerations
 			logger.good("Initializing Darknet")
@@ -36,8 +36,8 @@ class RobotIdentifier():
 			logger.good("Initializing Keras")
 			self.classifier = KerasClassifier()
 
-	# Initializes the OCR engine
 	def init_ocr(self):
+		''' Initializes the OCR engine '''
 		if self.TESSERACT:
 			logger.good("Initializing Tesseract")
 			self.OCR = TesseractOCR()
@@ -45,8 +45,8 @@ class RobotIdentifier():
 			logger.good("Initializing Cognitive Services")
 			self.OCR = AzureOCR()
 
-	# Initializes the tab completer
 	def init_tabComplete(self):
+		''' Initializes the tab completer '''
 		if OS_VERSION == "posix":
 			global tabCompleter
 			global readline
@@ -59,6 +59,8 @@ class RobotIdentifier():
 			readline.set_completer(comp.pathCompleter)
 
 	def prompt_input(self):
+		''' Prompts the user for input, depending on the python version.
+		Return: The filename provided by the user. '''
 		if PYTHON_VERSION == 3:
 			filename = str(input(" Specify File >>> "))
 		elif PYTHON_VERSION == 2:
@@ -68,7 +70,8 @@ class RobotIdentifier():
 	from utils.locate_asset import locate_asset
 
 	def __init__(self):
-
+		''' Run RobotIdentifier! '''
+		
 		self.init_vars()
 		self.init_tabComplete()
 		self.init_classifier()
