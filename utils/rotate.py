@@ -10,7 +10,12 @@ import time
 def initialize_rotnet():
 	''' For speed concerns, let's load up the model first 
 	Head to the RotNet directory and use correct_rotation to lod the model '''
-	init_rotnet(ROTNET_LOCATION + "/" + ROTNET_MODEL_NAME)
+	try:
+		logger.good("Initializing RotNet")
+		init_rotnet(ROTNET_LOCATION + "/" + ROTNET_MODEL_NAME)
+		return 0
+	except:
+		return -1
 
 
 def rotate(image):

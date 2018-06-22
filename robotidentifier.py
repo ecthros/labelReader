@@ -21,42 +21,64 @@ class RobotIdentifier():
 	''' Programatically finds and determines if a pictures contains an asset and where it is. '''
 
 	def init_vars(self):
-		self.DARKNET = DARKNET
-		self.KERAS = KERAS
-		self.TESSERACT = TESSERACT
-		self.COGNITIVE_SERVICES = COGNITIVE_SERVICES
+		try:
+			self.DARKNET = DARKNET
+			self.KERAS = KERAS
+			self.TESSERACT = TESSERACT
+			self.COGNITIVE_SERVICES = COGNITIVE_SERVICES
+			return 0
+		except:
+			return -1
 
 	def init_classifier(self):
 		''' Initializes the classifier '''
-		if self.DARKNET:
-		# Get a child process for speed considerations
-			logger.good("Initializing Darknet")
-			self.classifier = DarknetClassifier()
-		elif self.KERAS:
-			logger.good("Initializing Keras")
-			self.classifier = KerasClassifier()
+		try:
+			if self.DARKNET:
+			# Get a child process for speed considerations
+				logger.good("Initializing Darknet")
+				self.classifier = DarknetClassifier()
+			elif self.KERAS:
+				logger.good("Initializing Keras")
+				self.classifier = KerasClassifier()
+			if self.classifier == None or self.classifier == -1:
+				return -1
+			return 0
+		except:
+			return -1
 
 	def init_ocr(self):
 		''' Initializes the OCR engine '''
-		if self.TESSERACT:
-			logger.good("Initializing Tesseract")
-			self.OCR = TesseractOCR()
-		elif self.COGNITIVE_SERVICES:
-			logger.good("Initializing Cognitive Services")
-			self.OCR = AzureOCR()
+		try:
+			if self.TESSERACT:
+				logger.good("Initializing Tesseract")
+				self.OCR = TesseractOCR()
+			elif self.COGNITIVE_SERVICES:
+				logger.good("Initializing Cognitive Services")
+				self.OCR = AzureOCR()
+			if self.OCR == None or self.OCR == -1:
+				return -1
+			return 0
+		except:
+			return -1
 
 	def init_tabComplete(self):
 		''' Initializes the tab completer '''
-		if OS_VERSION == "posix":
-			global tabCompleter
-			global readline
-			from utils.PythonCompleter import tabCompleter
-			import readline
-			comp = tabCompleter()
-			# we want to treat '/' as part of a word, so override the delimiters
-			readline.set_completer_delims(' \t\n;')
-			readline.parse_and_bind("tab: complete")
-			readline.set_completer(comp.pathCompleter)
+		try:
+			if OS_VERSION == "posix":
+				global tabCompleter
+				global readline
+				from utils.PythonCompleter import tabCompleter
+				import readline
+				comp = tabCompleter()
+				# we want to treat '/' as part of a word, so override the delimiters
+				readline.set_completer_delims(' \t\n;')
+				readline.parse_and_bind("tab: complete")
+				readline.set_completer(comp.pathCompleter)
+				if not comp:
+					return -1
+			return 0
+		except:
+			return -1
 
 	def prompt_input(self):
 		''' Prompts the user for input, depending on the python version.
@@ -71,14 +93,17 @@ class RobotIdentifier():
 
 	def __init__(self):
 		''' Run RobotIdentifier! '''
-		
-		self.init_vars()
-		self.init_tabComplete()
-		self.init_classifier()
-		self.init_ocr()
-		
-		logger.good("Initializing RotNet")
-		initialize_rotnet()
+
+		if self.init_vars() != 0:
+			fatal("Init vars")
+		if self.init_tabComplete() != 0:
+			fatal("Init tabcomplete")
+		if self.init_classifier() != 0:
+			fatal("Init Classifier")
+		if self.init_ocr() != 0:
+			fatal("Init OCR")
+		if initialize_rotnet() != 0:
+			fatal("Init RotNet")
 
 		while True:
 
@@ -91,7 +116,7 @@ class RobotIdentifier():
 			########################
 
 			time1 = time.time()
-			print("Classify: " + str(time1-start))
+			print("Classify Time: " + str(time1-start))
 
 			#### Crop/rotate Image ####
 			logger.good("Locating Asset")
@@ -99,7 +124,7 @@ class RobotIdentifier():
 			###########################
 			
 			time2 = time.time()
-			print("Rotate: " + str(time2-time1))
+			print("Rotate Time: " + str(time2-time1))
 
 			#### Perform OCR ####
 			ocr_results = None
@@ -111,7 +136,7 @@ class RobotIdentifier():
 			#####################
 			
 			time3 = time.time()
-			print("OCR: " + str(time3-time2))
+			print("OCR Time: " + str(time3-time2))
 
 			#### Lookup Database ####
 			lookup_database(ocr_results)
