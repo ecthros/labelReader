@@ -8,7 +8,7 @@ def parse_args():
 	parser.add_argument('-t', '--tesseract', dest='TESSERACT', action='store_true')
 	parser.add_argument('-c', '--cognitive_services', dest='COGNITIVE_SERVICES', action='store_true')
 	parser.add_argument('-l', '--dbl', dest="DARKNET_BINARY_LOCATION", default=None)
-	parser.add_argument('-h', '--thresh', dest="DARKNET_THRESH", default=.25, type=float)
+	parser.add_argument('--thresh', dest="DARKNET_THRESH", default=.25, type=float)
 	parser.add_argument('--data', dest="DARKNET_DATA_FILE", default="data/obj.data")
 	parser.add_argument('--cfg', dest="DARKNET_CFG_FILE", default="yolo-obj.cfg")
 	parser.add_argument('--weights', dest="DARKNET_WEIGHTS", default="yolo-obj_1600.weights")

@@ -8,7 +8,7 @@ from config import *
 import time
 
 #For speed concerns, let's load up the model first
-def initialize_rotnet(model=ROTNET_MODEL_NAME):
+def initialize_rotnet():
 	# Head to the RotNet directory and use correct_rotation to lod the model
 	init_rotnet(ROTNET_LOCATION + "/" + ROTNET_MODEL_NAME)
 
