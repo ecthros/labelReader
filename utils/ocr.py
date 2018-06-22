@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
+import threading
 
 class OCR(ABC):
 	@abstractmethod
@@ -23,7 +24,7 @@ class OCR(ABC):
 		threadNum = 0
 		results = []
 		for image in images:
-			t = threading.Thread(target=self.ocr_one_image, args=(image[0], self.pic_to_string(image[1])), kwargs={'threadList':threadResults, 'threadNum':threadNum})
+			t = threading.Thread(target=self.ocr_one_image, args=(image[0], image[1]), kwargs={'threadList':threadResults, 'threadNum':threadNum})
 
 			t.start()
 			threads.append(t)
@@ -35,7 +36,6 @@ class OCR(ABC):
 		for result in threadResults:
 			results.append((images[i][0], result))
 			i += 1
-		print(results)
 		return results
 
 	def __init__(self):

@@ -4,7 +4,6 @@ import time
 from utils.ocr import OCR
 from config import *
 from io import BytesIO
-import threading
 from typing import Tuple, Dict, List
 
 class AzureOCR(OCR):
@@ -35,12 +34,13 @@ class AzureOCR(OCR):
 				print(response)
 		return txt
 
-	def ocr_one_image(self, area:Tuple[float, float, float, float], image_data:str, threadList=-1, threadNum=None) -> None:
+	def ocr_one_image(self, area:Tuple[float, float, float, float], image_data:object, threadList=-1, threadNum=None) -> None:
 		''' Performs OCR on a single image
 		Input:
 			area - String that describe the bounding box of the data
 			image_data - String of the data
 		'''
+		image_data = self.pic_to_string(image_data)
 		try:
 			request_url = "https://westus.api.cognitive.microsoft.com/vision/v2.0/recognizeText?mode=Printed"
 			headers  = {'Ocp-Apim-Subscription-Key': self.SUBSCRIPTION_KEY, 'Content-Type': "application/octet-stream"}
@@ -80,5 +80,3 @@ class AzureOCR(OCR):
 		string_contents = output_string.getvalue()
 		output_string.close()
 		return string_contents
-
-	
