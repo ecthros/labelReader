@@ -32,7 +32,9 @@ The repository contains another model, [RotNet](https://github.com/d4nst/RotNet)
 RobotIdentifier can run on Docker. It is recommended to install Docker and use the base image, continuumio/miniconda3:
 
 `docker pull continuumio/miniconda3
+
 docker run -i -t [Image ID] /bin/bash
+
 apt update`
 
 Then, clone the repository:
@@ -58,4 +60,3 @@ Make sure to specify if you want Keras or Darknet to classify, and Cognitive Ser
 * Labeling with [VoTT](https://github.com/Microsoft/VoTT) is much easier than anything else I have found.
 	* VoTT also creates the cfg, data, and folders for you.
 * Make sure your images are of the same aspect ratio, since Darknet will change the size to a fixed image (or, just change this parameter in Darknet)
-
