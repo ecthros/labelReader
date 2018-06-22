@@ -62,7 +62,7 @@ class AzureOCR(OCR):
 					#print(get_response)
 				res = self.print_response(area, get_response)
 				if threadList != -1:
-					threadList[threadNum] = res
+					threadList[threadNum] = (res)
 				return res
 			print(response)
 		except Exception as e:
@@ -86,15 +86,21 @@ class AzureOCR(OCR):
 		Input: images (tuple(area, image))
 		Returns the results from Tesseract.'''
 		threads = []
-		threadResults = [""*len(images)]
+		threadResults = ["" for i in range(len(images))]
 		threadNum = 0
-		for image in images: 
-			t = Thread(target=self.ocr_one_image, args=(image[0], self.pic_to_string(image[1]), threadList=threadResults, threadNum=threadNum))
+		results = []
+		for image in images:
+			t = threading.Thread(target=self.ocr_one_image, args=(image[0], self.pic_to_string(image[1])), kwargs={'threadList':threadResults, 'threadNum':threadNum})
+
 			t.start()
 			threads.append(t)
 			threadNum += 1
 
 		for t in threads:
 			t.join()
-
-		return threadResults
+		i = 0
+		for result in threadResults:
+			results.append((images[i][0], result))
+			i += 1
+		print(results)
+		return results

@@ -4,7 +4,8 @@ import utils.logger as logger
 from utils.rotate import rotate
 from config import *
 from typing import Tuple, List
-
+import sys
+i = 0
 def crop_image(image, area:Tuple) -> object:
 	''' Uses PIL to crop an image, given its area.
 	Input:
@@ -18,6 +19,9 @@ def crop_image(image, area:Tuple) -> object:
 
 	size = (3200, 3200)
 	rotated_image.thumbnail(size, Image.ANTIALIAS)
+	global i
+	rotated_image.save("asdf" + str(i) + ".jpg", "JPEG")
+	i += 1
 
 	if SHOW_IMAGES:
 		logger.good("Showing cropped image")

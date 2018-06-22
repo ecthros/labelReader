@@ -26,14 +26,15 @@ def lookup_database(txt:Tuple[Tuple[float, float, float, float], str]):
 		for l in lines:
 			for word in l.split(' '):
 				if word != "":
-					(guess, confidence) = process.extractOne(word, keys)
+					(guess, confidence) = process.extractOne(word, keys, scorer=fuzz.token_sort_ratio)
 					if confidence > max:
 						max = confidence
 						bestGuess = guess
 						bestWord = word
+
 		if bestGuess == "UNKNOWN":
 			print("Unknown product - " + str(line[0]))
 		else:
 			print(bestWord)
-			print(str(bose_qc25[bestGuess]) + " product - " + str(line[0]) + ", confidence: " + str(max))
+			print(str(bose_qc25[bestGuess]) + " product (" + bestGuess + ") - " + str(line[0]) + ", confidence: " + str(max))
 
