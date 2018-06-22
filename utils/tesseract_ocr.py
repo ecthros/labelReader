@@ -23,4 +23,3 @@ class TesseractOCR(OCR):
 		if threadList != -1:
 			threadList[threadNum] = txt
 		return txt
-
