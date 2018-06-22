@@ -16,13 +16,20 @@ class TesseractOCR(OCR):
 		self.tool = tools[0]
 		self.langs = self.tool.get_available_languages()
 
+	def ocr_one_image(self, area, image, threadList=-1, threadNum=None):
+		txt = self.tool.image_to_string(image, lang=self.langs[0], builder=pyocr.builders.TextBuilder())
+		print("==RESULT==" + str(image[0]) + "\n" + txt + "\n==========================")
+		if threadList != -1:
+			threadList[threadNum] = txt
+		return txt
+
 	def ocr(self, images:Tuple[Tuple[float, float, float, float], object]) -> Tuple[Tuple[float, float, float, float], str]:
 		'''Input: images (tuple(area, image))
 		Returns the results from Tesseract.'''
 
 		results = []
 		for image in images:
-			txt = self.tool.image_to_string(image[1], lang=self.langs[0], builder=pyocr.builders.TextBuilder())
-			print("==RESULT==" + str(image[0]) + "\n" + txt + "\n==========================")
+			
+			
 			results.append((image[0], txt))
 		return results
