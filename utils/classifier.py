@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Tuple
 
 class Classifier(ABC):
 	@abstractmethod
@@ -13,7 +14,7 @@ class Classifier(ABC):
 		pass
 
 	@abstractmethod
-	def extract_info(self, line):
+	def extract_info(self, line:str) -> Tuple:
 		''' Extract the information from a line returned by the classifier. 
 		Ex: Many programs do not return in an easily readable format, and need to be parsed.
 		For example, a line could be: "label (90%) x:1300 y:3400 height:300 width:900". This

@@ -1,5 +1,6 @@
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
+from typing import Tuple
 bose_qc25 = {
 "065252Z80341129AE": "ACTIVE",
 "065252Z80571416AE": "DISABLED"
@@ -10,8 +11,8 @@ DATABASE = {
 }
 
 
-def lookup_database(txt):
-	''' Input: 
+def lookup_database(txt:Tuple[Tuple[float, float, float, float], str]):
+	''' Input:
 	txt ((area, string) tuple) - Contains the bounding box of the image and the accompanying string.
 	This methodwill look up the string and determine if the product is active or disabled.'''
 	if txt is None:

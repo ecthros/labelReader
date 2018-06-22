@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import List
 
 class OCR(ABC):
 	@abstractmethod
@@ -7,9 +8,9 @@ class OCR(ABC):
 		pass
 
 	@abstractmethod
-	def ocr(self, images):
+	def ocr(self, images:List) -> List:
 		''' OCR an image.
-		Input: An array of (area, image)s, opened by PIL and pre-processed 
+		Input: An array of (area, image)s, opened by PIL and pre-processed
 		Return: An array of (area, message), where the message is from OCR'''
 		pass
 
