@@ -20,7 +20,7 @@ else
 	sudo apt install python-pip python-tk git unzip libsm6 libxext6
 fi
 
-pip install pillow requests opencv-python keras tensorflow matplotlib pexpect Cython
+pip install pillow requests opencv-python keras tensorflow matplotlib pexpect Cython fuzzywuzzy
 
 echo -e "\n\nInstalling RotNet\n\n"
 git clone https://github.com/ecthros/RotNet
