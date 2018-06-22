@@ -31,15 +31,18 @@ The repository contains another model, [RotNet](https://github.com/d4nst/RotNet)
 
 RobotIdentifier can run on Docker. It is recommended to install Docker and use the base image, continuumio/miniconda3:
 
-`docker pull continuumio/miniconda3
-
+```
+docker pull continuumio/miniconda3
 docker run -i -t [Image ID] /bin/bash
-
-apt update`
+apt update
+```
 
 Then, clone the repository:
-`git clone https://github.com/ecthros/robotidentifier
-cd robotidentifier`
+
+```
+git clone https://github.com/ecthros/robotidentifier
+cd robotidentifier
+```
 
 To install necessary dependencies, run:
 
