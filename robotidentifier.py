@@ -1,6 +1,6 @@
 #!/usr/bin/python
-
 from __future__ import print_function
+from config import *
 from utils.darknet_classify_image import *
 from utils.keras_classify_image import *
 from utils.azure_ocr import *
@@ -13,14 +13,13 @@ from PIL import Image
 import time
 import os
 from RotNet.correct_rotation import *
-from config import *
 
 PYTHON_VERSION = sys.version_info[0]
 OS_VERSION = os.name
 
 class RobotIdentifier():
 	''' Programatically finds and determines if a pictures contains an asset and where it is. '''
-	
+
 	def init_vars(self):
 		self.DARKNET = DARKNET
 		self.KERAS = KERAS
@@ -48,15 +47,16 @@ class RobotIdentifier():
 
 	# Initializes the tab completer
 	def init_tabComplete(self):
-		global tabCompleter
-		global readline
-		from utils.PythonCompleter import tabCompleter
-		import readline
-		comp = tabCompleter()
-		# we want to treat '/' as part of a word, so override the delimiters
-		readline.set_completer_delims(' \t\n;')
-		readline.parse_and_bind("tab: complete")
-		readline.set_completer(comp.pathCompleter)
+		if OS_VERSION == "posix":
+			global tabCompleter
+			global readline
+			from utils.PythonCompleter import tabCompleter
+			import readline
+			comp = tabCompleter()
+			# we want to treat '/' as part of a word, so override the delimiters
+			readline.set_completer_delims(' \t\n;')
+			readline.parse_and_bind("tab: complete")
+			readline.set_completer(comp.pathCompleter)
 
 	def prompt_input(self):
 		if PYTHON_VERSION == 3:
@@ -70,12 +70,8 @@ class RobotIdentifier():
 	def __init__(self):
 
 		self.init_vars()
-
-		if OS_VERSION == "posix":
-			self.init_tabComplete()
-
+		self.init_tabComplete()
 		self.init_classifier()
-		
 		self.init_ocr()
 		
 		logger.good("Initializing RotNet")
