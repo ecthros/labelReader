@@ -3,6 +3,7 @@ import pyocr
 import pyocr.builders
 import sys
 from PIL import Image
+from typing import Tuple
 
 class TesseractOCR(OCR):
 
@@ -11,11 +12,11 @@ class TesseractOCR(OCR):
 		tools = pyocr.get_available_tools()
 		if len(tools) == 0:
 			print("No tools found, do you have Tesseract installed?")
-			sys.exit(1) # TODO fix
+			sys.exit(1)
 		self.tool = tools[0]
 		self.langs = self.tool.get_available_languages()
 
-	def ocr(self, images):
+	def ocr(self, images:Tuple[Tuple[float, float, float, float], object]) -> Tuple[Tuple[float, float, float, float], str]:
 		'''Input: images (tuple(area, image))
 		Returns the results from Tesseract.'''
 

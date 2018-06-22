@@ -4,14 +4,18 @@ import time
 from utils.ocr import OCR
 from config import *
 from io import BytesIO
+<<<<<<< HEAD
 import threading
+=======
+from typing import Tuple, Dict, List
+>>>>>>> 2c3abadcc1641af2a5a80922bc96f4d3f7bb8264
 
 class AzureOCR(OCR):
 	def initialize(self):
 		self.SUBSCRIPTION_KEY = SUBSCRIPTION_KEY
 		self.SHOW_RESPONSE = SHOW_RESPONSE
 
-	def print_response(self, area, response):
+	def print_response(self, area:Tuple[float, float, float, float], response:Dict) -> str:
 		''' Prints the response from Cognitive Services.
 		Input:
 			area - String describing the bounding box of the data
@@ -34,8 +38,13 @@ class AzureOCR(OCR):
 				print(response)
 		return txt
 
+<<<<<<< HEAD
 	
 	def ocr_one_image(self, area, image_data, threadList=-1, threadNum=None):
+=======
+
+	def ocr_one_image(self, area:Tuple[float, float, float, float], image_data:str) -> None:
+>>>>>>> 2c3abadcc1641af2a5a80922bc96f4d3f7bb8264
 		''' Performs OCR on a single image
 		Input:
 			area - String that describe the bounding box of the data
@@ -48,7 +57,7 @@ class AzureOCR(OCR):
 
 			# Send the POST request and parse the response
 			response = requests.request('post', request_url, headers=headers, data=data)
-			
+
 			if response.status_code == 202:
 				get_response = {}
 				get_response["status"] = "Running"
@@ -71,7 +80,7 @@ class AzureOCR(OCR):
 			return None
 
 
-	def pic_to_string(self, image):
+	def pic_to_string(self, image) -> str:
 		''' Uses PIL and StringIO to save the image to a string for further processing 
 		Input: image - an image opened by PIL
 		Output: A string containing all the data of the picture'''
@@ -81,7 +90,7 @@ class AzureOCR(OCR):
 		output_string.close()
 		return string_contents
 
-	def ocr(self, images):
+	def ocr(self, images:List) -> List:
 		'''Sends an opened image to Azure's cognitive services.
 		Input: images (tuple(area, image))
 		Returns the results from Tesseract.'''

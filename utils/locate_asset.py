@@ -3,8 +3,9 @@ from PIL import ImageFilter
 import utils.logger as logger
 from utils.rotate import rotate
 from config import *
+from typing import Tuple, List
 
-def crop_image(image, area):
+def crop_image(image, area:Tuple) -> object:
 	''' Uses PIL to crop an image, given its area.
 	Input:
 		image - PIL opened image
@@ -17,7 +18,7 @@ def crop_image(image, area):
 
 	size = (3200, 3200)
 	rotated_image.thumbnail(size, Image.ANTIALIAS)
-	
+
 	if SHOW_IMAGES:
 		logger.good("Showing cropped image")
 		rotated_image.show()
@@ -25,7 +26,7 @@ def crop_image(image, area):
 	return rotated_image
 
 
-def locate_asset(self, image, classifier, lines=""):
+def locate_asset(self, image, classifier, lines="") -> List:
 	''' Determines where an asset is in the picture, returning
 	 a set of coordinates, for the top left, top right, bottom
 	 left, and bottom right of the tag
@@ -46,5 +47,5 @@ def locate_asset(self, image, classifier, lines=""):
 		logger.bad("No label found in image.")
 	else:
 		logger.good("Found " + str(len(cropped_images)) + " label(s) in image.")
-			
+
 	return cropped_images

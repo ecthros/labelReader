@@ -2,6 +2,7 @@ import pexpect
 import os
 from utils.classifier import Classifier
 from config import *
+from typing import Tuple
 
 class KerasClassifier(Classifier):
 
@@ -16,8 +17,8 @@ class KerasClassifier(Classifier):
 			self.proc = pexpect.spawn(command, cwd=os.path.dirname(KERAS_LOCATION))
 		self.proc.expect('Input image filename:')
 
-	
-	def classify_image(self, image):
+
+	def classify_image(self, image:str) -> str:
 		''' Classifies a given image using Keras-Yolo3.
 		Should already be initialized.
 		 Input:
@@ -29,7 +30,7 @@ class KerasClassifier(Classifier):
 		res = self.proc.before
 		return res.decode('utf-8')
 
-	def extract_info(self, line):
+	def extract_info(self, line:str) -> Tuple:
 		''' Extracts the information from a single line that contains a label.
 		Input: line (string), a line that already contains the label
 		Output: area (Tuple of four ints), which gives the area of the bounding box.
@@ -40,7 +41,7 @@ class KerasClassifier(Classifier):
 		nameplate_top_y = int(nameplate_info[3][:-1])
 		nameplate_right_x = int(nameplate_info[4][1:][:-1])
 		nameplate_bottom_y = int(nameplate_info[5][:-1])
-		
+
 		area = (nameplate_left_x, nameplate_top_y, nameplate_right_x, (nameplate_bottom_y))
 
 		return area

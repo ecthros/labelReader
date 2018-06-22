@@ -7,8 +7,8 @@ from RotNet.correct_rotation import *
 from config import *
 import time
 
-def initialize_rotnet():
-	''' For speed concerns, let's load up the model first 
+def initialize_rotnet() -> int:
+	''' For speed concerns, let's load up the model first
 	Head to the RotNet directory and use correct_rotation to lod the model '''
 	try:
 		logger.good("Initializing RotNet")
@@ -18,7 +18,7 @@ def initialize_rotnet():
 		return -1
 
 
-def rotate(image):
+def rotate(image:object) -> object:
 	''' Uses RotNet's Keras/Tensorflow algorithm to rotate an image.
 		Input: image, opened with PIL
 		Output: Rotated image '''
