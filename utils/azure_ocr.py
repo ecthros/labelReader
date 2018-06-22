@@ -4,11 +4,8 @@ import time
 from utils.ocr import OCR
 from config import *
 from io import BytesIO
-<<<<<<< HEAD
 import threading
-=======
 from typing import Tuple, Dict, List
->>>>>>> 2c3abadcc1641af2a5a80922bc96f4d3f7bb8264
 
 class AzureOCR(OCR):
 	def initialize(self):
@@ -38,13 +35,7 @@ class AzureOCR(OCR):
 				print(response)
 		return txt
 
-<<<<<<< HEAD
-	
-	def ocr_one_image(self, area, image_data, threadList=-1, threadNum=None):
-=======
-
-	def ocr_one_image(self, area:Tuple[float, float, float, float], image_data:str) -> None:
->>>>>>> 2c3abadcc1641af2a5a80922bc96f4d3f7bb8264
+	def ocr_one_image(self, area:Tuple[float, float, float, float], image_data:str, threadList=-1, threadNum=None) -> None:
 		''' Performs OCR on a single image
 		Input:
 			area - String that describe the bounding box of the data
