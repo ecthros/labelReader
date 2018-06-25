@@ -67,10 +67,12 @@ class RobotIdentifier():
 
 	def init_database(self):
 		if self.LOCAL_DATABASE:
-			from utils.local_database import *
+			logger.good("Initializing local database")
+			from utils.local_database import LocalDatabase
 			self.database = LocalDatabase()
 		elif self.COSMOS_DATABASE:
-			from utils.cosmos_database import *
+			logger.good("Initializing Cosmos Database")
+			from utils.cosmos_database import CosmosDatabase
 			self.database = CosmosDatabase()
 		if self.database == -1:
 			return -1
@@ -120,7 +122,8 @@ class RobotIdentifier():
 			fatal("Init OCR")
 		if initialize_rotnet() != 0:
 			fatal("Init RotNet")
-
+		if self.init_database() == -1:
+			fatal("Initializing Database")
 		while True:
 
 			filename = self.prompt_input()

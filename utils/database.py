@@ -2,6 +2,7 @@ from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 from typing import Tuple
 from abc import ABC, abstractmethod
+from utils.logger import *
 
 class Database(object):
 
@@ -14,7 +15,7 @@ class Database(object):
 	def __init__(self):
 		self.database = self.initialize()
 
-	def lookup_database(txt:Tuple[Tuple[float, float, float, float], str]):
+	def lookup_database(self, txt:Tuple[Tuple[float, float, float, float], str]):
 		''' Input:
 		txt ((area, string) tuple) - Contains the bounding box of the image and the accompanying string.
 		This methodwill look up the string and determine if the product is active or disabled.'''
