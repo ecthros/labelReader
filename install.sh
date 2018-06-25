@@ -12,15 +12,15 @@ if [ "`which sudo`" = "" ]; then
 	echo -e "Installing Python"
 	apt install python
 	echo -e "\n\nInstalling Python Dependencies\n\n"
-	apt install python-pip python-tk git unzip libsm6 libxext6
+	apt install python-pip python-tk git unzip libsm6 libxext6 tesseract-ocr
 else
 	echo -e "Installing Python"
 	sudo apt install python
 	echo -e "\n\nInstalling Python Dependencies\n\n"
-	sudo apt install python-pip python-tk git unzip libsm6 libxext6
+	sudo apt install python-pip python-tk git unzip libsm6 libxext6 tesseract-ocr
 fi
 
-pip install pillow requests opencv-python keras tensorflow matplotlib pexpect Cython
+pip install pillow requests opencv-python keras tensorflow matplotlib pexpect pyocr Cython fuzzywuzzy[speedup]
 
 echo -e "\n\nInstalling RotNet\n\n"
 git clone https://github.com/ecthros/RotNet
@@ -43,7 +43,7 @@ chmod 755 darknet
 echo -e "\n\nDownloading Keras-Yolo3\n\n"
 git clone https://github.com/qqwweee/keras-yolo3
 cd keras-yolo3
-python convert.py ../yolo-obj.cfg yolo-obj_1600.weights model_data/yolo.h5
+python convert.py ../yolo-obj.cfg ../yolo-obj_1600.weights model_data/yolo.h5
 echo "label" > model_data/coco_classes.txt
 
 #needed darknet. Moved to pwd.

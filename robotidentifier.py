@@ -21,44 +21,86 @@ class RobotIdentifier():
 	''' Programatically finds and determines if a pictures contains an asset and where it is. '''
 
 	def init_vars(self):
-		self.DARKNET = DARKNET
-		self.KERAS = KERAS
-		self.TESSERACT = TESSERACT
-		self.COGNITIVE_SERVICES = COGNITIVE_SERVICES
+		try:
+			self.DARKNET = DARKNET
+			self.KERAS = KERAS
+			self.TESSERACT = TESSERACT
+			self.COGNITIVE_SERVICES = COGNITIVE_SERVICES
+			
+			self.COSMOS_DATABASE = COSMOS_DATABASE
+			self.LOCAL_DATABASE = LOCAL_DATABASE
 
-	# Initializes the classifier
+			return 0
+		except:
+			return -1
+
 	def init_classifier(self):
-		if self.DARKNET:
-		# Get a child process for speed considerations
-			logger.good("Initializing Darknet")
-			self.classifier = DarknetClassifier()
-		elif self.KERAS:
-			logger.good("Initializing Keras")
-			self.classifier = KerasClassifier()
+		''' Initializes the classifier '''
+		try:
+			if self.DARKNET:
+			# Get a child process for speed considerations
+				logger.good("Initializing Darknet")
+				self.classifier = DarknetClassifier()
+			elif self.KERAS:
+				logger.good("Initializing Keras")
+				self.classifier = KerasClassifier()
+			if self.classifier == None or self.classifier == -1:
+				return -1
+			return 0
+		except:
+			return -1
 
-	# Initializes the OCR engine
 	def init_ocr(self):
-		if self.TESSERACT:
-			logger.good("Initializing Tesseract")
-			self.OCR = TesseractOCR()
-		elif self.COGNITIVE_SERVICES:
-			logger.good("Initializing Cognitive Services")
-			self.OCR = AzureOCR()
+		''' Initializes the OCR engine '''
+		try:
+			if self.TESSERACT:
+				logger.good("Initializing Tesseract")
+				self.OCR = TesseractOCR()
+			elif self.COGNITIVE_SERVICES:
+				logger.good("Initializing Cognitive Services")
+				self.OCR = AzureOCR()
+			if self.OCR == None or self.OCR == -1:
+				return -1
+			return 0
+		except:
+			return -1
 
-	# Initializes the tab completer
+	def init_database(self):
+		if self.LOCAL_DATABASE:
+			logger.good("Initializing local database")
+			from utils.local_database import LocalDatabase
+			self.database = LocalDatabase()
+		elif self.COSMOS_DATABASE:
+			logger.good("Initializing Cosmos Database")
+			from utils.cosmos_database import CosmosDatabase
+			self.database = CosmosDatabase()
+		if self.database == -1:
+			return -1
+		return 0
+
+
 	def init_tabComplete(self):
-		if OS_VERSION == "posix":
-			global tabCompleter
-			global readline
-			from utils.PythonCompleter import tabCompleter
-			import readline
-			comp = tabCompleter()
-			# we want to treat '/' as part of a word, so override the delimiters
-			readline.set_completer_delims(' \t\n;')
-			readline.parse_and_bind("tab: complete")
-			readline.set_completer(comp.pathCompleter)
+		''' Initializes the tab completer '''
+		try:
+			if OS_VERSION == "posix":
+				global tabCompleter
+				global readline
+				from utils.PythonCompleter import tabCompleter
+				import readline
+				comp = tabCompleter()
+				# we want to treat '/' as part of a word, so override the delimiters
+				readline.set_completer_delims(' \t\n;')
+				readline.parse_and_bind("tab: complete")
+				readline.set_completer(comp.pathCompleter)
+				if not comp:
+					return -1
+			return 0
+		except:
+			return -1
 
 	def prompt_input(self):
+		''' Prompts the user for input, depending on the python version.
+		Return: The filename provided by the user. '''
 		if PYTHON_VERSION == 3:
 			filename = str(input(" Specify File >>> "))
 		elif PYTHON_VERSION == 2:
@@ -68,15 +110,20 @@ class RobotIdentifier():
 	from utils.locate_asset import locate_asset
 
 	def __init__(self):
+		''' Run RobotIdentifier! '''
 
-		self.init_vars()
-		self.init_tabComplete()
-		self.init_classifier()
-		self.init_ocr()
-		
-		logger.good("Initializing RotNet")
-		initialize_rotnet()
-
+		if self.init_vars() != 0:
+			fatal("Init vars")
+		if self.init_tabComplete() != 0:
+			fatal("Init tabcomplete")
+		if self.init_classifier() != 0:
+			fatal("Init Classifier")
+		if self.init_ocr() != 0:
+			fatal("Init OCR")
+		if initialize_rotnet() != 0:
+			fatal("Init RotNet")
+		if self.init_database() == -1:
+			fatal("Initializing Database")
 		while True:
 
 			filename = self.prompt_input()
@@ -88,7 +135,7 @@ class RobotIdentifier():
 			########################
 
 			time1 = time.time()
-			print("Classify: " + str(time1-start))
+			print("Classify Time: " + str(time1-start))
 
 			#### Crop/rotate Image ####
 			logger.good("Locating Asset")
@@ -96,7 +143,7 @@ class RobotIdentifier():
 			###########################
 			
 			time2 = time.time()
-			print("Rotate: " + str(time2-time1))
+			print("Rotate Time: " + str(time2-time1))
 
 			#### Perform OCR ####
 			ocr_results = None
@@ -108,10 +155,10 @@ class RobotIdentifier():
 			#####################
 			
 			time3 = time.time()
-			print("OCR: " + str(time3-time2))
+			print("OCR Time: " + str(time3-time2))
 
 			#### Lookup Database ####
-			lookup_database(ocr_results)
+			self.database.lookup_database(ocr_results)
 			#########################
 
 			end = time.time()
