@@ -26,6 +26,10 @@ class RobotIdentifier():
 			self.KERAS = KERAS
 			self.TESSERACT = TESSERACT
 			self.COGNITIVE_SERVICES = COGNITIVE_SERVICES
+			
+			self.COSMOS_DATABASE = COSMOS_DATABASE
+			self.LOCAL_DATABASE = LOCAL_DATABASE
+
 			return 0
 		except:
 			return -1
@@ -60,6 +64,18 @@ class RobotIdentifier():
 			return 0
 		except:
 			return -1
+
+	def init_database(self):
+		if self.LOCAL_DATABASE:
+			from utils.local_database import *
+			self.database = LocalDatabase()
+		elif self.COSMOS_DATABASE:
+			from utils.cosmos_database import *
+			self.database = CosmosDatabase()
+		if self.database == -1:
+			return -1
+		return 0
+
 
 	def init_tabComplete(self):
 		''' Initializes the tab completer '''
@@ -139,7 +155,7 @@ class RobotIdentifier():
 			print("OCR Time: " + str(time3-time2))
 
 			#### Lookup Database ####
-			lookup_database(ocr_results)
+			self.database.lookup_database(ocr_results)
 			#########################
 
 			end = time.time()

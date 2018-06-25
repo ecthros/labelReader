@@ -2,8 +2,8 @@ from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 from typing import Tuple
 bose_qc25 = {
-"065252Z80341129AE": "ACTIVE",
-"065252Z80571416AE": "DISABLED"
+"065252Z80341129AE": "Active",
+"065252Z80571416AE": "Inactive"
 }
 
 DATABASE = {

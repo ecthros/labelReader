@@ -20,6 +20,8 @@ def parse_args():
 	parser.add_argument('-o', '--rotnet_location', dest='ROTNET_LOCATION', default="./RotNet", help="Location of RotNet")
 	parser.add_argument('-m', '--model_name', dest='ROTNET_MODEL_NAME', default="rotnet_models/rotnet_street_view_resnet50_keras2.hdf5", help="Location of RotNet Model")
 	parser.add_argument('-f', '--file_name', dest='ROTNET_SAVE_FILE_NAME', default="tilted.jpg", help="Where to save for RotNet")
+	parser.add_argument('--local', dest='LOCAL_DATABASE', action='store_true', help="Use local database")
+	parser.add_argument('-x', '--cosmos', dest='COSMOS_DATABASE', action='store_true', help='Use Cosmos database')
 	args = parser.parse_args()
 	if args.KERAS == False and args.DARKNET == False:
 		parser.error("Either Darknet or Keras must be set, add -k or -d")
@@ -99,6 +101,7 @@ SHOW_IMAGES = args.SHOW_IMAGES
 LABEL_NAME = args.LABEL_NAME
 
 ##########################################################
+
 ########################## RotNet Constants ###########################
 ### The following constants will most likely not need to be changed ###
 
@@ -108,3 +111,14 @@ ROTNET_SAVE_FILE_NAME	= args.ROTNET_SAVE_FILE_NAME
 
 #######################################################################
 
+####################### DATABASE INFO #######################
+
+LOCAL_DATABASE 	= args.LOCAL_DATABASE
+COSMOS_DATABASE	= args.COSMOS_DATABASE
+
+#############################################################
+
+HOST = ""
+MASTER_KEY = ""
+DATABASE_ID = ""
+COLLECTION_ID = ""
