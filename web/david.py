@@ -8,7 +8,7 @@ import sys
 sys.path.append("../.") 
 import json 
 from Core.AbstractModel import IModel, resolve_model 
-from AutoEncoder-original import PointAutoEncoder 
+#from AutoEncoder-original import PointAutoEncoder 
 from robotidentifier import RobotIdentifier
 
 Algorithm = None 
@@ -28,12 +28,16 @@ def preprocess(data):
 def predict(data):
 	return Algorithm.find_and_classify(filename)
 
+def process_image(in_data):	 
+	filename = preprocess(in_data) 
+	data = predict(filename)
+	return data
+
+
 def run(string_body):
 	""" 
 	called on each web request. The body is the request body as a string. 
 	""" 
 
-	in_data = json.dumps(string_body) #converts to dictionary 
-	filename = preprocess(in_data) 
-	data = predict(filename)
-	return data
+	in_data = json.dumps(string_body) #converts to dictionary
+	process_image(in_data)
