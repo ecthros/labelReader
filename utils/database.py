@@ -21,6 +21,7 @@ class Database(object):
 		This methodwill look up the string and determine if the product is active or disabled.'''
 		if txt is None:
 			return
+		products = ""
 		for line in txt:
 			lines = line[1].split('\n')
 			max = 0
@@ -40,5 +41,8 @@ class Database(object):
 				print("Unknown product - " + str(line[0]))
 			else:
 				print(bestWord)
-				print(str(self.database[bestGuess]) + " product (" + bestGuess + ") - " + str(line[0]) + ", confidence: " + str(max))
+				product = (str(self.database[bestGuess]) + " product (" + bestGuess + ") - " + str(line[0]) + ", confidence: " + str(max))
+				products += product
+				print(product)
+		return products
 
