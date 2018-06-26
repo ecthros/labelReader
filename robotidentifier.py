@@ -107,9 +107,7 @@ class RobotIdentifier():
 
 	from utils.locate_asset import locate_asset
 
-	def __init__(self):
-		''' Run RobotIdentifier! '''
-
+	def initialize(self):
 		if self.init_vars() != 0:
 			fatal("Init vars")
 		if self.init_tabComplete() != 0:
@@ -121,45 +119,53 @@ class RobotIdentifier():
 		if initialize_rotnet() != 0:
 			fatal("Init RotNet")
 
-		while True:
+	def find_and_classify(self, filename):
+		start = time.time()
 
-			filename = self.prompt_input()
-			start = time.time()
+		#### Classify Image ####
+		logger.good("Classifying Image")
+		coords = self.classifier.classify_image(filename)
+		########################
 
-			#### Classify Image ####
-			logger.good("Classifying Image")
-			coords = self.classifier.classify_image(filename)
-			########################
+		time1 = time.time()
+		print("Classify Time: " + str(time1-start))
 
-			time1 = time.time()
-			print("Classify Time: " + str(time1-start))
+		#### Crop/rotate Image ####
+		logger.good("Locating Asset")
+		cropped_images = self.locate_asset(filename, self.classifier, lines=coords)
+		###########################
+		
+		time2 = time.time()
+		print("Rotate Time: " + str(time2-time1))
 
-			#### Crop/rotate Image ####
-			logger.good("Locating Asset")
-			cropped_images = self.locate_asset(filename, self.classifier, lines=coords)
-			###########################
-			
-			time2 = time.time()
-			print("Rotate Time: " + str(time2-time1))
+		#### Perform OCR ####
+		ocr_results = None
+		if cropped_images == []:
+			logger.bad("No assets found, so terminating execution")	 
+		else:
+			logger.good("Performing OCR")
+			ocr_results = self.OCR.ocr(cropped_images)
+		#####################
+		
+		time3 = time.time()
+		print("OCR Time: " + str(time3-time2))
 
-			#### Perform OCR ####
-			ocr_results = None
-			if cropped_images == []:
-				logger.bad("No assets found, so terminating execution")	 
-			else:
-				logger.good("Performing OCR")
-				ocr_results = self.OCR.ocr(cropped_images)
-			#####################
-			
-			time3 = time.time()
-			print("OCR Time: " + str(time3-time2))
+		#### Lookup Database ####
+		self.database.lookup_database(ocr_results)
+		#########################
 
-			#### Lookup Database ####
-			self.database.lookup_database(ocr_results)
-			#########################
+		end = time.time()
+		logger.good("Elapsed: " + str(end-start))
 
-			end = time.time()
-			logger.good("Elapsed: " + str(end-start))
+
+
+	def __init__(self):
+		''' Run RobotIdentifier! '''
+		self.initialize()
+
 
 if __name__ == "__main__":
-	RobotIdentifier()
+	identifier = RobotIdentifier()
+	while True:
+		filename = identifier.prompt_input()
+		identifier.find_and_classify(filename)
