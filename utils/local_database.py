@@ -1,4 +1,4 @@
-from utils.database import database
+from utils.database import Database
 
 
 bose_qc25 = {

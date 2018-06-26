@@ -1,4 +1,4 @@
-from utils.database import database
+from utils.database import Database
 import pydocumentdb.documents as documents
 import pydocumentdb.document_client as document_client
 import requests
@@ -40,4 +40,5 @@ class CosmosDatabase(Database):
 			self.database = ChainMap(*database)
 		else:
 			return -1
-		return 0
+		return self.database
+
