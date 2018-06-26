@@ -23,12 +23,12 @@ def parse_args():
 	parser.add_argument('--local', dest='LOCAL_DATABASE', action='store_true', help="Use local database")
 	parser.add_argument('-x', '--cosmos', dest='COSMOS_DATABASE', action='store_true', help='Use Cosmos database')
 	args = parser.parse_args()
-	if args.KERAS == False and args.DARKNET == False:
-		parser.error("Either Darknet or Keras must be set, add -k or -d")
-	if args.TESSERACT == False and args.COGNITIVE_SERVICES == False:
-		parser.error("Either Tesseract or Cognitive Services must be set, add -t or -c")
-	if args.COGNITIVE_SERVICES == True and args.SUBSCRIPTION_KEY == "":
-		parser.error("Cognitive Services needs a subscription key, please provide with -s")
+	#if args.KERAS == False and args.DARKNET == False:
+	#	parser.error("Either Darknet or Keras must be set, add -k or -d")
+	#if args.TESSERACT == False and args.COGNITIVE_SERVICES == False:
+	#	parser.error("Either Tesseract or Cognitive Services must be set, add -t or -c")
+	#if args.COGNITIVE_SERVICES == True and args.SUBSCRIPTION_KEY == "":
+	#	parser.error("Cognitive Services needs a subscription key, please provide with -s")
 	return args
 
 
