@@ -111,17 +111,17 @@ class RobotIdentifier():
 
 	def initialize(self):
 		if self.init_vars() != 0:
-			fatal("Init vars")
+			logger.fatal("Init vars")
 		if self.init_tabComplete() != 0:
-			fatal("Init tabcomplete")
+			logger.fatal("Init tabcomplete")
 		if self.init_classifier() != 0:
-			fatal("Init Classifier")
+			logger.fatal("Init Classifier")
 		if self.init_ocr() != 0:
-			fatal("Init OCR")
+			logger.fatal("Init OCR")
 		if initialize_rotnet() != 0:
-			fatal("Init RotNet")
+			logger.fatal("Init RotNet")
 		if self.init_database() == -1:
-			info("Not using Database")
+			logger.info("Not using Database")
 
 	def find_and_classify(self, filename):
 		start = time.time()
