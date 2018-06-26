@@ -123,7 +123,7 @@ class RobotIdentifier():
 		if initialize_rotnet() != 0:
 			fatal("Init RotNet")
 		if self.init_database() == -1:
-			fatal("Initializing Database")
+			info("Not using Database")
 		while True:
 
 			filename = self.prompt_input()
@@ -141,7 +141,7 @@ class RobotIdentifier():
 			logger.good("Locating Asset")
 			cropped_images = self.locate_asset(filename, self.classifier, lines=coords)
 			###########################
-			
+
 			time2 = time.time()
 			print("Rotate Time: " + str(time2-time1))
 
@@ -153,12 +153,13 @@ class RobotIdentifier():
 				logger.good("Performing OCR")
 				ocr_results = self.OCR.ocr(cropped_images)
 			#####################
-			
+
 			time3 = time.time()
 			print("OCR Time: " + str(time3-time2))
 
 			#### Lookup Database ####
-			self.database.lookup_database(ocr_results)
+			if self.database != -1:
+				self.database.lookup_database(ocr_results)
 			#########################
 
 			end = time.time()
