@@ -15,7 +15,7 @@ class KerasClassifier(Classifier):
 			self.proc = popen_spawn.PopenSpawn(command, cwd=os.path.dirname(KERAS_LOCATION))
 		else:
 			self.proc = pexpect.spawn(command, cwd=os.path.dirname(KERAS_LOCATION))
-		self.proc.expect('Input image filename:')
+		self.proc.expect('Input image filename:', timeout=90)
 
 
 	def classify_image(self, image:str) -> str:
