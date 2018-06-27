@@ -27,4 +27,4 @@ def index():
 if __name__ == '__main__':
 	global identifier
 	identifier = RobotIdentifier()
-	app.run(debug=True, host='0.0.0.0')
+	app.run(debug=True, host='0.0.0.0', port=80)
