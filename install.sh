@@ -12,7 +12,7 @@ if [ "`which sudo`" = "" ]; then
 	echo -e "Installing Python"
 	apt install python
 	echo -e "\n\nInstalling Python Dependencies\n\n"
-	apt install python-pip python-tk git unzip libsm6 libxext6 tesseract-ocr
+	apt install python-pip python-tk git unzip libsm6 libxext6 tesseract-ocr wget
 else
 	echo -e "Installing Python"
 	sudo apt install python
