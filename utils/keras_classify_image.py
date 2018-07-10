@@ -15,7 +15,7 @@ class KerasClassifier(Classifier):
 			self.proc = popen_spawn.PopenSpawn(command, cwd=os.path.dirname(KERAS_LOCATION))
 		else:
 			self.proc = pexpect.spawn(command, cwd=os.path.dirname(KERAS_LOCATION))
-		self.proc.expect('Input image filename:')
+		self.proc.expect('Input image filename:', timeout=900)
 
 
 	def classify_image(self, image:str) -> str:
@@ -26,7 +26,7 @@ class KerasClassifier(Classifier):
 		 Returns:
 		    string of the results from Keras-Yolo3'''
 		self.proc.sendline("../" + image) # Todo please fix this line
-		self.proc.expect('Input image filename:', timeout=90)
+		self.proc.expect('Input image filename:', timeout=900)
 		res = self.proc.before
 		return res.decode('utf-8')
 

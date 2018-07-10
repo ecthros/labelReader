@@ -10,17 +10,17 @@ if [ "`which sudo`" = "" ]; then
 		exit -1
 	fi
 	echo -e "Installing Python"
-	apt install python
+	apt install -y python
 	echo -e "\n\nInstalling Python Dependencies\n\n"
-	apt install python-pip python-tk git unzip libsm6 libxext6 tesseract-ocr wget
+	apt install -y python-pip python-tk git unzip libsm6 libxext6 tesseract-ocr python-opencv libsm6 libxext6 gcc unzip wget
 else
 	echo -e "Installing Python"
-	sudo apt install python
+	sudo apt install -y python
 	echo -e "\n\nInstalling Python Dependencies\n\n"
-	sudo apt install python-pip python-tk git unzip libsm6 libxext6 tesseract-ocr
+	sudo apt install -y python-pip python-tk git unzip libsm6 libxext6 tesseract-ocr python-opencv libsm6 libxext6 gcc unzip
 fi
 
-pip install pillow requests opencv-python keras tensorflow matplotlib pexpect pyocr Cython fuzzywuzzy[speedup]
+pip install pillow requests opencv-python keras tensorflow matplotlib pexpect pyocr Cython fuzzywuzzy[speedup] pydocumentdb numpy
 
 echo -e "\n\nInstalling RotNet\n\n"
 git clone https://github.com/ecthros/RotNet
