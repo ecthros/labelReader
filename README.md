@@ -1,4 +1,11 @@
-RobotIdentifier is a general Machine Learning-based solution to identifying nameplates in a picture
+labelReader is a general Machine Learning-based solution to identifying labels in a picture
+
+A common problem is doing OCR on a simple picture. But what if that picture is complicated, has many items, and words that aren't important to the user? LabelReader finds the important label in the picture, crops it out, rotates it, and then finally reads the label.
+
+# Demonstration
+<p align="center">
+<img src="https://user-images.githubusercontent.com/14065974/41622209-bcca5a84-73c3-11e8-84e7-00eae15f3011.gif" alt="Demonstration" height="450">
+</p>
 
 # The Approach
 
@@ -11,25 +18,20 @@ The identifier's approach is straightforward:
 5. Read characters in the cropped picture
 6. Find the relevant information in a database and present it to the user
 
-# Demonstration
-<p align="center">
-<img src="https://user-images.githubusercontent.com/14065974/41622209-bcca5a84-73c3-11e8-84e7-00eae15f3011.gif" alt="Demonstration" height="450">
-</p>
-
 ### Details
 
-RobotIdentifier uses the [Yolov3 algorithm](https://pjreddie.com) for object detection. The user can choose between the following to interact with the algorithm:
+LabelReader uses the [Yolov3 algorithm](https://pjreddie.com) for object detection. The user can choose between the following to interact with the algorithm:
 * [Darknet](https://github.com/AlexeyAB/darknet)  (Fast, C Implementation) 
 * [Keras-Yolov3](https://github.com/qqwweee/keras-yolo3) (Python Implementation) 
 
 This repository contains a model that has been trained on labels for headphones, and will need to be tuned for custom images. 
-For Optical Character Recognition, RobotIdentifier sends the processed images to Azure Cognitive Services. Users need to create an account with Cognitive Services Vision to use the model. Since it takes a few seconds to send and receive the request, RobotIdentifier supports an alternative library, [Tesseract](https://github.com/tesseract-ocr/tesseract) for faster OCR.
+For Optical Character Recognition, LabelReader sends the processed images to Azure Cognitive Services. Users need to create an account with Cognitive Services Vision to use the model. Since it takes a few seconds to send and receive the request, LabelReader supports an alternative library, [Tesseract](https://github.com/tesseract-ocr/tesseract) for faster OCR.
 
 The repository contains another model, [RotNet](https://github.com/d4nst/RotNet) to detect how much to rotate the image. This should work for most products, but may need to be trained to suit your needs.
 
 # Getting Started
 
-RobotIdentifier can run on Docker. It is recommended to install Docker and use the base image, continuumio/miniconda3:
+LabelReader can run on Docker. It is recommended to install Docker and use the base image, continuumio/miniconda3:
 
 ```
 docker pull continuumio/miniconda3
@@ -40,17 +42,17 @@ apt update
 Then, clone the repository:
 
 ```
-git clone https://github.com/ecthros/robotidentifier
-cd robotidentifier
+git clone https://github.com/ecthros/labelReader
+cd labelReader
 ```
 
 To install necessary dependencies, run:
 
 `./install.sh`
 
-This script will install necessary components and set up RobotIdentifier to run. Once finished, run:
+This script will install necessary components and set up LabelReader to run. Once finished, run:
 
-`python robotidentifier.py [-k/-d] [-c/-t]`
+`python labelReader.py [-k/-d] [-c/-t]`
 
 Make sure to specify if you want Keras or Darknet to classify, and Cognitive Services or Tesseract for OCR.
 
