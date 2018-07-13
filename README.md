@@ -54,6 +54,23 @@ This script will install necessary components and set up RobotIdentifier to run.
 
 Make sure to specify if you want Keras or Darknet to classify, and Cognitive Services or Tesseract for OCR.
 
+
+### Use Cases
+This nameplate identifier can be adapted for many causes. Identifying and analyzing parts of a picture is a very common problem, and this code is meant to be easily extendable. Simply add your own classes, extending the abstract classes given, or train your own model with the steps above. 
+
+Many users might want to create a REST endpoint on Azure. This code is also included in this repository. Simply push your docker container to Docker Hub or Azure Container Storage, extending what is written, and follow the following steps:
+* Make sure your container automatically launches the web app locally
+	* The endpoint will launch at /api/v1.0/image
+* Navigate to [Azure](https://portal.azure.com) and log in
+* Press the green "Create New Item" button
+* Select "Web App"
+* Enter the App name, subscription, and resource group
+* Select "Docker" for the OS
+* Select "Container Settings" and fill in the information for your container
+* Create the container.
+Note that the default web app does not have enough RAM to run most ML models, and you may need to update your plan's App service pricing tier.
+
+
 ### Classifier Training Notes
 
 * Training can take several hours to complete, even with an excellent GPU.
