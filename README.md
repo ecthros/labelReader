@@ -1,4 +1,4 @@
-RobotIdentifier is a Machine Learning-based solution to identifying a robot based on a picture that contains its nameplate.
+RobotIdentifier is a general Machine Learning-based solution to identifying nameplates in a picture
 
 # The Approach
 
