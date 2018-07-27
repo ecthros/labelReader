@@ -7,6 +7,9 @@ def good(message:str):
 def bad(message:str):
 	''' Prints a message with [-] at the front to signify failure '''
 	print("[-] " + str(message))
+def info(message:str):
+	''' Prints a message to signify information '''
+	print("[ ] " + str(message))
 
 def fatal(failure:str):
 	print("[/] " + str(failure) + " failed, exiting now")

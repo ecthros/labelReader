@@ -74,6 +74,8 @@ class RobotIdentifier():
 			logger.good("Initializing Cosmos Database")
 			from utils.cosmos_database import CosmosDatabase
 			self.database = CosmosDatabase()
+		else:
+			self.database = -1
 		if self.database == -1:
 			return -1
 		return 0
