@@ -1,6 +1,6 @@
-LabelReader is a general Machine Learning-based solution to identifying labels in a picture
+LabelReader is a general Machine Learning-based solution to identifying labels in a picture.
 
-A common problem is doing OCR on a simple picture. But what if that picture is complicated, has many items, and words that aren't important to the user? LabelReader finds the important label in the picture, crops it out, rotates it, and then finally reads the label.
+A common problem is using OCR on a simple picture. But what if that picture is complicated, has many items, and words that aren't important to the user? LabelReader finds the important label in the picture, crops it out, rotates it, and then reads the label to pinpoint the object you're looking for..
 
 # Demonstration
 <p align="center">
