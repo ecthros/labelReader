@@ -10,7 +10,7 @@ class KerasClassifier(Classifier):
 		''' Initialize the Keras-yolo model for speed concerns.
 		 Return: None, but self.proc is populated with a procedure that can interface with Keras-Yolo '''
 
-		command = "python yolo.py"
+		command = "python yolo_video.py --image"
 		if os.name == 'nt':
 			self.proc = popen_spawn.PopenSpawn(command, cwd=os.path.dirname(KERAS_LOCATION))
 		else:
