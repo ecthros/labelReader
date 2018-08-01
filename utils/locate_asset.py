@@ -42,7 +42,7 @@ def locate_asset(self, image, classifier, lines="") -> List:
 
 	for line in str(lines).split('\n'):
 
-		if LABEL_NAME in line:
+		if LABEL_NAME + ":" in line:
 			# Extract the nameplate info
 			area = classifier.extract_info(line)
 			# Open image
