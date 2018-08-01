@@ -35,7 +35,7 @@ LabelReader can run on Docker. It is recommended to install Docker and use the b
 
 ```
 docker pull continuumio/miniconda3
-docker run -i -t [Image ID] /bin/bash
+docker run -i -t continuumio/miniconda3 /bin/bash
 apt update
 ```
 
